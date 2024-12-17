@@ -3,6 +3,7 @@ import { Home } from './pages/Home';
 import LoginForm from './pages/Login';
 import { AdminDashboard } from './pages/Admin';
 import { UserProvider } from './context/AuthContext';
+import './index.css';
 
 export function App() {
   return (
