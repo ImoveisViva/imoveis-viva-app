@@ -5,7 +5,7 @@ import { PieChart, Pie, Cell, BarChart, Bar, XAxis, YAxis, Tooltip, Legend, Resp
 import { Building, Home, Landmark } from 'lucide-react'
 import { useEffect, useState } from "react"
 import { ImovelType } from "@/hooks/types"
-import { getImoveisDB } from "@/firebase/admin/Dashboard"
+import { GetImoveisDB } from "@/firebase/admin/getDashboard"
 
 const imoveisVencendo = [
   { id: 1, endereco: 'Rua A, 123', tipo: 'Casa', dataVencimento: '2023-07-15' },
@@ -32,7 +32,7 @@ export default function DashboardPro() {
   useEffect(() => {
     async function handleGetBD() {
       try {
-        const data = await getImoveisDB();
+        const data = await GetImoveisDB();
         setDataBD(data)
       } catch (error) {
         console.log(error)
