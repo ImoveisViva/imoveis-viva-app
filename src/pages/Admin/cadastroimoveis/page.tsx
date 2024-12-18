@@ -7,38 +7,14 @@ import { Textarea } from "@/components/ui/textarea"
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select"
 import { Alert, AlertDescription } from "@/components/ui/alert"
 import { Separator } from "@/components/ui/separator"
-
 import { useToast } from '@/hooks/use-toast'
 import CadastroImoveis from '@/firebase/admin/cadastroImoveis'
-
-type PropertyData = {
-    categoria: string
-    tipoImovel: string
-    tipoNegocio: string
-    quartos: number
-    sala: number
-    cozinha: number
-    preco: number
-    descricao: string
-    endereco: {
-        bairro: string
-        cidade: string
-        rua: string
-        numero: number
-        latitude: string
-        longitude: string
-    }
-    contato: {
-        nome: string
-        telefone: number
-        email: string
-    }
-}
+import { ImovelType } from '@/hooks/types'
 
 export default function CadastroImoveisPage() {
     const { toast } = useToast();
 
-    const [propertyData, setPropertyData] = useState<PropertyData>({
+    const [propertyData, setPropertyData] = useState<ImovelType>({
         categoria: '',
         tipoImovel: '',
         tipoNegocio: '',
@@ -156,6 +132,7 @@ export default function CadastroImoveisPage() {
             setIsLoading(false)
         }
     }
+    
     return (
         <div className="container mx-auto py-10 pb-32 ">
             <Card className="w-full max-w-4xl mx-auto">

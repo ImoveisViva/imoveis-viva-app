@@ -2,21 +2,10 @@ import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card"
 import { Progress } from "@/components/ui/progress"
 import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from "@/components/ui/table"
 import { PieChart, Pie, Cell, BarChart, Bar, XAxis, YAxis, Tooltip, Legend, ResponsiveContainer, LineChart, Line } from 'recharts'
-import { Building, Home, Landmark, TreePine } from 'lucide-react'
-
-const tipoImoveis = [
-  { name: 'Casa', value: 400, icon: Home },
-  { name: 'Apartamento', value: 300, icon: Building },
-  { name: 'Terreno', value: 200, icon: TreePine },
-  { name: 'Outros', value: 100, icon: Landmark },
-]
-
-const categoriaImoveis = [
-  { name: 'Aluguel', quantidade: 500 },
-  { name: 'Venda', quantidade: 300 },
-  { name: 'Disponível', quantidade: 200 },
-  { name: 'Vendido', quantidade: 150 },
-]
+import { Building, Home, Landmark } from 'lucide-react'
+import { useEffect, useState } from "react"
+import { getImoveisDB } from "@/firebase/admin/Dashboard"
+import { ImovelType } from "@/hooks/types"
 
 const imoveisVencendo = [
   { id: 1, endereco: 'Rua A, 123', tipo: 'Casa', dataVencimento: '2023-07-15' },
@@ -35,10 +24,53 @@ const historicoAlugueis = [
 ]
 
 export default function DashboardPro() {
-  const totalImoveis = 1000
+  const [dataBD, setDataBD] = useState<ImovelType[]>([]);
+  const totalImoveis = dataBD?.length
   const metaImoveis = 1200
   const progressoMeta = (totalImoveis / metaImoveis) * 100
-  const mediaAluguel = 2500
+
+  useEffect(() => {
+    async function handleGetBD() {
+      try {
+        const data = await getImoveisDB();
+        setDataBD(data)
+      } catch (error) {
+        console.log(error)
+      }
+    }
+    handleGetBD()
+  }, [])
+
+  // CALCULANDO A MÉDIA DO ALUGUEIS ------------------------------------
+  const alugueis = dataBD.filter(imovel => imovel.tipoNegocio === "aluguel");
+  const somaPreco = alugueis.reduce((total, imovel) => total + Number(imovel.preco), 0);
+  const mediaPrecoAluguel = alugueis.length > 0 ? somaPreco / alugueis.length : 0;
+
+  // TIPOS DE IMÓVEIS --------------------------------------------------
+  const casa = dataBD.filter(imovel => imovel.tipoImovel === 'casa');
+  const apartamento = dataBD.filter(imovel => imovel.tipoImovel === 'apartamento');
+  const comercial = dataBD.filter(imovel => imovel.tipoImovel === 'comercial');
+
+  const tipoImoveis = [
+    { name: 'Apartamento', value: apartamento.length, icon: Building },
+    { name: 'Casa', value: casa.length, icon: Home },
+    { name: 'Outros', value: comercial.length, icon: Landmark },
+  ]
+
+  // CATEGORIA DE IMÓVEIS ----------------------------------------------
+  const comum = dataBD.filter(imovel => imovel.categoria === 'comum');
+  const promocao = dataBD.filter(imovel => imovel.categoria === 'promocao');
+  const destaque = dataBD.filter(imovel => imovel.categoria === 'destaque');
+
+  const categoriaImoveis = [
+    { name: 'Destaque', Quantidade: destaque.length },
+    { name: 'Promoção', Quantidade: promocao.length },
+    { name: 'Comum', Quantidade: comum.length },
+  ]
+
+  useEffect(() => {
+
+  }, [dataBD])
 
   return (
     <div className="p-8 bg-gray-50 min-h-screen">
@@ -46,7 +78,7 @@ export default function DashboardPro() {
       <div className="grid gap-6 md:grid-cols-2 lg:grid-cols-4">
         <Card className="shadow-lg">
           <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
-            <CardTitle className="text-sm font-medium">Total de Imóveis</CardTitle>
+            <CardTitle className="text-sm font-medium">Meta de Imóveis cadastrados</CardTitle>
             <Building className="h-4 w-4 text-muted-foreground" />
           </CardHeader>
           <CardContent>
@@ -64,7 +96,7 @@ export default function DashboardPro() {
             <Landmark className="h-4 w-4 text-muted-foreground" />
           </CardHeader>
           <CardContent>
-            <div className="text-2xl font-bold">R$ {mediaAluguel.toLocaleString()}</div>
+            <div className="text-2xl font-bold">R${mediaPrecoAluguel.toFixed(2)}</div>
             <p className="text-xs text-muted-foreground mt-2">
               +2.5% em relação ao mês anterior
             </p>
@@ -126,7 +158,7 @@ export default function DashboardPro() {
 
         <Card className="shadow-lg">
           <CardHeader>
-            <CardTitle className="text-sm font-medium">Categorias de Imóveis</CardTitle>
+            <CardTitle className="text-sm font-medium">Categorias dos Imóveis cadastrados</CardTitle>
           </CardHeader>
           <CardContent>
             <ResponsiveContainer width="100%" height={300}>
@@ -134,7 +166,7 @@ export default function DashboardPro() {
                 <XAxis dataKey="name" />
                 <YAxis />
                 <Tooltip />
-                <Bar dataKey="quantidade" fill="#8884d8" />
+                <Bar dataKey="Quantidade" fill="#8884d8" />
               </BarChart>
             </ResponsiveContainer>
           </CardContent>
