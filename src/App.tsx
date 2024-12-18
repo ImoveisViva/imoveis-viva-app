@@ -14,9 +14,10 @@ export function App() {
       <BrowserRouter>
         <Routes>
           <Route path="/" element={<Home />} />
+          <Route path='/*' element={<Home />} />
           <Route path="/login" element={<LoginForm />} />
           <Route path="/admin" element={<AdminDashboard />}>
-            <Route index element={<DashboardPage />} />
+            <Route path='/admin' element={<DashboardPage />} />
             <Route path="cadastroimoveis" element={<CadastroImoveisPage />} />
             <Route path="consultaimoveis" element={<ConsultarImoveisPage />} />
           </Route>

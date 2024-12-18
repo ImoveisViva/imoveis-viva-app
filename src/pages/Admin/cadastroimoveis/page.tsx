@@ -1,11 +1,12 @@
 import { useState, FormEvent } from 'react'
 import { Button } from "@/components/ui/button"
-import { Card, CardContent, CardFooter, CardHeader } from "@/components/ui/card"
+import { Card, CardContent, CardFooter, CardHeader, CardTitle } from "@/components/ui/card"
 import { Input } from "@/components/ui/input"
 import { Label } from "@/components/ui/label"
 import { Textarea } from "@/components/ui/textarea"
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select"
 import { Alert, AlertDescription } from "@/components/ui/alert"
+import { Separator } from "@/components/ui/separator"
 
 import { useToast } from '@/hooks/use-toast'
 import CadastroImoveis from '@/firebase/admin/cadastroImoveis'
@@ -67,7 +68,9 @@ export default function CadastroImoveisPage() {
         const { name, value } = e.target
         setPropertyData(prev => ({
             ...prev,
-            [name]: value
+            [name]: name === 'quartos' || name === 'sala' || name === 'cozinha' ?
+                (value === '' ? 0 : parseInt(value, 10)) :
+                value
         }))
     }
 
@@ -84,7 +87,9 @@ export default function CadastroImoveisPage() {
             ...prev,
             endereco: {
                 ...prev.endereco,
-                [name]: value
+                [name]: name === 'numero' ?
+                    (value === '' ? 0 : parseInt(value, 10)) :
+                    value
             }
         }))
     }
@@ -152,17 +157,19 @@ export default function CadastroImoveisPage() {
         }
     }
     return (
-        <div className="flex items-center justify-center min-h-screen bg-gray-100 p-4">
-            <Card className="w-full max-w-4xl">
+        <div className="container mx-auto py-10 pb-32 ">
+            <Card className="w-full max-w-4xl mx-auto">
                 <CardHeader>
-                    <h1 className='text-[24px] font-bold'>Cadastro de Imóvel</h1>
+                    <CardTitle className="text-2xl font-bold">Cadastro de Imóvel</CardTitle>
                 </CardHeader>
                 <form onSubmit={handleSubmit}>
-                    <CardContent className="space-y-4">
-                        <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+                    <CardContent className="space-y-6">
+                        <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
                             <div className="space-y-2">
-                                <Label htmlFor="categoria">Categoria</Label>
-                                <Select name="categoria" value={propertyData.categoria} onValueChange={(value) => handleSelectChange('categoria', value)}>
+                                <Label htmlFor="categoria">
+                                    Categoria <span className="text-red-500">*</span>
+                                </Label>
+                                <Select name="categoria" value={propertyData.categoria} onValueChange={(value) => handleSelectChange('categoria', value)} required>
                                     <SelectTrigger>
                                         <SelectValue placeholder="Selecione a categoria" />
                                     </SelectTrigger>
@@ -174,8 +181,10 @@ export default function CadastroImoveisPage() {
                                 </Select>
                             </div>
                             <div className="space-y-2">
-                                <Label htmlFor="tipoImovel">Tipo do Imóvel</Label>
-                                <Select name="tipoImovel" value={propertyData.tipoImovel} onValueChange={(value) => handleSelectChange('tipoImovel', value)}>
+                                <Label htmlFor="tipoImovel">
+                                    Tipo do Imóvel <span className="text-red-500">*</span>
+                                </Label>
+                                <Select name="tipoImovel" value={propertyData.tipoImovel} onValueChange={(value) => handleSelectChange('tipoImovel', value)} required>
                                     <SelectTrigger>
                                         <SelectValue placeholder="Selecione o tipo" />
                                     </SelectTrigger>
@@ -187,8 +196,10 @@ export default function CadastroImoveisPage() {
                                 </Select>
                             </div>
                             <div className="space-y-2">
-                                <Label htmlFor="tipoNegocio">Tipo de Negócio</Label>
-                                <Select name="tipoNegocio" value={propertyData.tipoNegocio} onValueChange={(value) => handleSelectChange('tipoNegocio', value)}>
+                                <Label htmlFor="tipoNegocio">
+                                    Tipo de Negócio <span className="text-red-500">*</span>
+                                </Label>
+                                <Select name="tipoNegocio" value={propertyData.tipoNegocio} onValueChange={(value) => handleSelectChange('tipoNegocio', value)} required>
                                     <SelectTrigger>
                                         <SelectValue placeholder="Selecione o tipo" />
                                     </SelectTrigger>
@@ -199,85 +210,115 @@ export default function CadastroImoveisPage() {
                                 </Select>
                             </div>
                             <div className="space-y-2">
-                                <Label htmlFor="quartos">Quartos</Label>
-                                <Input value={propertyData.quartos.toString()} type="number" id="quartos" name="quartos" onChange={handleInputChange} required />
+                                <Label htmlFor="quartos">
+                                    Quartos <span className="text-red-500">*</span>
+                                </Label>
+                                <Input value={propertyData.quartos.toString()} type="number" id="quartos" name="quartos" onChange={handleInputChange} min="0" required />
                             </div>
                             <div className="space-y-2">
-                                <Label htmlFor="sala">Sala</Label>
-                                <Input value={propertyData.sala.toString()} type="number" id="sala" name="sala" onChange={handleInputChange} required />
+                                <Label htmlFor="sala">
+                                    Sala <span className="text-red-500">*</span>
+                                </Label>
+                                <Input value={propertyData.sala.toString()} type="number" id="sala" name="sala" onChange={handleInputChange} min="0" required />
                             </div>
                             <div className="space-y-2">
-                                <Label htmlFor="cozinha">Cozinha</Label>
-                                <Input value={propertyData.cozinha.toString()} type="number" id="cozinha" name="cozinha" onChange={handleInputChange} required />
+                                <Label htmlFor="cozinha">
+                                    Cozinha <span className="text-red-500">*</span>
+                                </Label>
+                                <Input value={propertyData.cozinha.toString()} type="number" id="cozinha" name="cozinha" onChange={handleInputChange} min="0" required />
                             </div>
                             <div className="space-y-2">
-                                <Label htmlFor="preco">Preço</Label>
-                                <Input value={propertyData.preco.toString()} type="number" id="preco" name="preco" onChange={handleInputChange} required />
+                                <Label htmlFor="preco">
+                                    Preço <span className="text-red-500">*</span>
+                                </Label>
+                                <Input value={propertyData.preco.toString()} type="number" id="preco" name="preco" onChange={handleInputChange} min="0" required />
                             </div>
                         </div>
                         <div className="space-y-2">
-                            <Label htmlFor="descricao">Descrição</Label>
+                            <Label htmlFor="descricao">
+                                Descrição <span className="text-red-500">*</span>
+                            </Label>
                             <Textarea value={propertyData.descricao} id="descricao" name="descricao" onChange={handleInputChange} required />
                         </div>
-                        <div className="space-y-2">
+                        <Separator />
+                        <div className="space-y-4">
                             <h3 className="text-lg font-semibold">Endereço</h3>
-                            <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+                            <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
                                 <div className="space-y-2">
-                                    <Label htmlFor="bairro">Bairro</Label>
+                                    <Label htmlFor="bairro">
+                                        Bairro <span className="text-red-500">*</span>
+                                    </Label>
                                     <Input value={propertyData.endereco.bairro} type="text" id="bairro" name="bairro" onChange={handleAddressChange} required />
                                 </div>
                                 <div className="space-y-2">
-                                    <Label htmlFor="cidade">Cidade</Label>
+                                    <Label htmlFor="cidade">
+                                        Cidade <span className="text-red-500">*</span>
+                                    </Label>
                                     <Input value={propertyData.endereco.cidade} type="text" id="cidade" name="cidade" onChange={handleAddressChange} required />
                                 </div>
                                 <div className="space-y-2">
-                                    <Label htmlFor="rua">Rua</Label>
+                                    <Label htmlFor="rua">
+                                        Rua <span className="text-red-500">*</span>
+                                    </Label>
                                     <Input value={propertyData.endereco.rua} type="text" id="rua" name="rua" onChange={handleAddressChange} required />
                                 </div>
                                 <div className="space-y-2">
-                                    <Label htmlFor="numero">Número</Label>
-                                    <Input value={propertyData.endereco.numero.toString()} type="number" id="numero" name="numero" onChange={handleAddressChange} required />
+                                    <Label htmlFor="numero">
+                                        Número <span className="text-red-500">*</span>
+                                    </Label>
+                                    <Input value={propertyData.endereco.numero.toString()} type="number" id="numero" name="numero" onChange={handleAddressChange} min="0" required />
                                 </div>
                                 <div className="space-y-2">
-                                    <Label htmlFor="latitude">Latitude</Label>
-                                    <Input value={propertyData.endereco.latitude} type="number" id="latitude" name="latitude" onChange={handleAddressChange} required />
+                                    <Label htmlFor="latitude">
+                                        Latitude <span className="text-red-500">*</span>
+                                    </Label>
+                                    <Input value={propertyData.endereco.latitude} type="number" id="latitude" name="latitude" onChange={handleAddressChange} step="any" required />
                                 </div>
                                 <div className="space-y-2">
-                                    <Label htmlFor="longitude">Longitude</Label>
-                                    <Input value={propertyData.endereco.longitude} type="number" id="longitude" name="longitude" onChange={handleAddressChange} required />
+                                    <Label htmlFor="longitude">
+                                        Longitude <span className="text-red-500">*</span>
+                                    </Label>
+                                    <Input value={propertyData.endereco.longitude} type="number" id="longitude" name="longitude" onChange={handleAddressChange} step="any" required />
                                 </div>
                             </div>
                         </div>
-                        <div className="space-y-2">
-                            <h3 className="text-lg font-semibold">Contato do Dono</h3>
-                            <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+                        <Separator />
+                        <div className="space-y-4">
+                            <h3 className="text-lg font-semibold">Contato do Proprietário</h3>
+                            <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
                                 <div className="space-y-2">
-                                    <Label htmlFor="nome">Nome</Label>
+                                    <Label htmlFor="nome">
+                                        Nome <span className="text-red-500">*</span>
+                                    </Label>
                                     <Input value={propertyData.contato.nome} type="text" id="nome" name="nome" onChange={handleContactChange} required />
                                 </div>
                                 <div className="space-y-2">
-                                    <Label htmlFor="telefone">Telefone</Label>
+                                    <Label htmlFor="telefone">
+                                        Telefone <span className="text-red-500">*</span>
+                                    </Label>
                                     <Input value={propertyData.contato.telefone.toString()} type="tel" id="telefone" name="telefone" onChange={handleContactChange} required />
                                 </div>
                                 <div className="space-y-2">
-                                    <Label htmlFor="email">Email</Label>
+                                    <Label htmlFor="email">
+                                        Email <span className="text-red-500">*</span>
+                                    </Label>
                                     <Input value={propertyData.contato.email} type="email" id="email" name="email" onChange={handleContactChange} required />
                                 </div>
                             </div>
                         </div>
                     </CardContent>
-                    <CardFooter className="flex flex-col">
+                    <CardFooter>
                         <Button className="w-full" type="submit" disabled={isLoading}>
                             {isLoading ? 'Cadastrando...' : 'Cadastrar Imóvel'}
                         </Button>
-                        {error && (
-                            <Alert variant="destructive" className="mt-4">
-                                <AlertDescription>{error}</AlertDescription>
-                            </Alert>
-                        )}
                     </CardFooter>
                 </form>
             </Card>
+            {error && (
+                <Alert variant="destructive" className="mt-4 max-w-4xl mx-auto">
+                    <AlertDescription>{error}</AlertDescription>
+                </Alert>
+            )}
         </div>
     )
 }

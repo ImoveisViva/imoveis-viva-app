@@ -1,90 +1,90 @@
-import { useEffect, useState } from 'react';
-import styles from './login-form.module.css';
-import { useUser } from '../../context/AuthContext';
-import { useNavigate } from 'react-router-dom';
+import { useState } from 'react'
+import { useNavigate } from 'react-router-dom'
+import { useUser } from '@/context/AuthContext'
+import { Button } from "@/components/ui/button"
+import { Input } from "@/components/ui/input"
+import { Label } from "@/components/ui/label"
+import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card"
+import { Alert, AlertDescription } from "@/components/ui/alert"
+import { Loader2 } from 'lucide-react'
 
 export default function LoginForm() {
-  const { user, login } = useUser();
-  const [email, setEmail] = useState('');
-  const [password, setPassword] = useState('');
-  const [error, setError] = useState('');
+  const { login } = useUser()
+  const [email, setEmail] = useState('')
+  const [password, setPassword] = useState('')
+  const [error, setError] = useState('')
+  const [isLoading, setIsLoading] = useState(false)
   const navigate = useNavigate()
 
-  useEffect(() => {
-    console.log(user)
-    if (user) {
-      navigate('/admin')
-    }
-  }), [user]
-
   const handleLogin = async (e: React.FormEvent) => {
-    e.preventDefault();
+    e.preventDefault()
+    setIsLoading(true)
+    setError('')
     try {
-      const user = {
-        email: email,
-        password: password
-      }
-      setError('');
-      login(user);
-      setEmail('');
-      setPassword('');
+      await login({ email, password })
+      setEmail('')
+      setPassword('')
       navigate('/admin')
     } catch (e) {
-      console.log('aqui erro', e)
-      setError('Erro ao fazer login. Verifique suas credenciais.');
+      console.error('Erro ao fazer login:', e)
+      setError('Erro ao fazer login. Verifique suas credenciais.')
+    } finally {
+      setIsLoading(false)
     }
-  };
+  }
 
   return (
-    <div className={styles.container}>
-      <div className={styles.formContainer}>
-        <h1 className={styles.title}>Login</h1>
-        <p className={styles.subtitle}>
-          Entre com seu email e senha para acessar sua conta.
-        </p>
-
-        {error && <p className={styles.error}>{error}</p>}
-
-        <form onSubmit={handleLogin} className={styles.form}>
-          <div className={styles.inputGroup}>
-            <label htmlFor="email" className={styles.label}>
-              Email
-            </label>
-            <input
-              id="email"
-              type="email"
-              value={email}
-              onChange={(e) => setEmail(e.target.value)}
-              placeholder="seu@email.com"
-              className={styles.input}
-              required
-            />
-          </div>
-
-          <div className={styles.inputGroup}>
-            <div className={styles.passwordHeader}>
-              <label htmlFor="password" className={styles.label}>
-                Senha
-              </label>
-              <a href="#" className={styles.forgotPassword}>
-                Esqueceu a senha?
-              </a>
+    <div className="flex items-center justify-center min-h-screen bg-gray-100">
+      <Card className="w-full max-w-md">
+        <CardHeader>
+          <CardTitle className="text-2xl font-bold">Login</CardTitle>
+          <CardDescription>
+            Entre com seu email e senha para acessar sua conta.
+          </CardDescription>
+        </CardHeader>
+        <CardContent>
+          <form onSubmit={handleLogin} className="space-y-4">
+            <div className="space-y-2">
+              <Label htmlFor="email">Email</Label>
+              <Input
+                id="email"
+                type="email"
+                placeholder="seu@email.com"
+                value={email}
+                onChange={(e) => setEmail(e.target.value)}
+                required
+              />
             </div>
-            <input
-              id="password"
-              type="password"
-              value={password}
-              onChange={(e) => setPassword(e.target.value)}
-              className={styles.input}
-              required
-            />
-          </div>
-
-          <button type="submit" className={styles.submitButton}>
-            Entrar
-          </button>
-        </form>
-      </div>
+            <div className="space-y-2">
+              <div className="flex items-center justify-between">
+                <Label htmlFor="password">Senha</Label>
+              </div>
+              <Input
+                id="password"
+                type="password"
+                value={password}
+                onChange={(e) => setPassword(e.target.value)}
+                required
+              />
+            </div>
+            {error && (
+              <Alert variant="destructive">
+                <AlertDescription>{error}</AlertDescription>
+              </Alert>
+            )}
+            <Button type="submit" className="w-full" disabled={isLoading}>
+              {isLoading ? (
+                <>
+                  <Loader2 className="mr-2 h-4 w-4 animate-spin" />
+                  Entrando...
+                </>
+              ) : (
+                'Entrar'
+              )}
+            </Button>
+          </form>
+        </CardContent>
+      </Card>
     </div>
-  );
+  )
 }
