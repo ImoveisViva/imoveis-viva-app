@@ -4,8 +4,8 @@ import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from "@
 import { PieChart, Pie, Cell, BarChart, Bar, XAxis, YAxis, Tooltip, Legend, ResponsiveContainer, LineChart, Line } from 'recharts'
 import { Building, Home, Landmark } from 'lucide-react'
 import { useEffect, useState } from "react"
-import { getImoveisDB } from "@/firebase/admin/Dashboard"
 import { ImovelType } from "@/hooks/types"
+import { getImoveisDB } from "@/firebase/admin/Dashboard"
 
 const imoveisVencendo = [
   { id: 1, endereco: 'Rua A, 123', tipo: 'Casa', dataVencimento: '2023-07-15' },
