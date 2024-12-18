@@ -1,5 +1,5 @@
 import { useState } from 'react'
-import { Home, Search, CirclePlus, Menu, LogOut } from 'lucide-react'
+import { Home, Search, CirclePlus, Menu, LogOut, MapIcon } from 'lucide-react'
 import { cn } from "@/lib/utils"
 import { Button } from '@/components/ui/button'
 import { signOut } from 'firebase/auth'
@@ -13,6 +13,7 @@ const menuItems = [
     { icon: Home, label: 'Dashboard', href: '/admin/' },
     { icon: CirclePlus, label: 'Cadastrar Imóveis', href: '/admin/cadastroimoveis' },
     { icon: Search, label: 'Consultar Imóveis', href: '/admin/consultaimoveis' },
+    { icon: MapIcon, label: 'Mapa', href: '/admin/mapa' },
 ]
 
 export function Sidebar() {
