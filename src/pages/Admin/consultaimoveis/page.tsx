@@ -213,7 +213,7 @@ export default function ConsultaImoveis() {
                       ? `R$ ${imovel.preco}/mês`
                       : `R$ ${imovel.preco.toLocaleString()}`}
                   </span>
-                  <span className="text-sm text-muted-foreground">{imovel.categoria}</span>
+                  <span className="text-sm text-muted-foreground font-bold text-[#c99e06]">{imovel.categoria}</span>
                 </div>
                 <Separator className="my-4" />
                 <div className="flex justify-between text-sm text-muted-foreground">

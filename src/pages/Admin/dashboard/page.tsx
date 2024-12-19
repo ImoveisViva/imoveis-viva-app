@@ -93,9 +93,6 @@ export default function DashboardPro() {
           </CardHeader>
           <CardContent>
             <div className="text-2xl font-bold">R${mediaPrecoAluguel.toFixed(2)}</div>
-            <p className="text-xs text-muted-foreground mt-2">
-              +2.5% em relação ao mês anterior
-            </p>
           </CardContent>
         </Card>
 
