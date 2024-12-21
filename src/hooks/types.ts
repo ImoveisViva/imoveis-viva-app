@@ -21,4 +21,6 @@ export interface ImovelType {
         email: string
     }
     id?: string
+    fotos: File[];
+    disponivel: Boolean
 }

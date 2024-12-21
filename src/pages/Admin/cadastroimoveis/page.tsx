@@ -1,20 +1,22 @@
-import { useState, FormEvent } from 'react'
-import { Button } from "@/components/ui/button"
-import { Card, CardContent, CardFooter, CardHeader, CardTitle } from "@/components/ui/card"
-import { Input } from "@/components/ui/input"
-import { Label } from "@/components/ui/label"
-import { Textarea } from "@/components/ui/textarea"
-import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select"
-import { Alert, AlertDescription } from "@/components/ui/alert"
-import { Separator } from "@/components/ui/separator"
-import { useToast } from '@/hooks/use-toast'
-import CadastroImoveis from '@/firebase/admin/cadastroImoveis'
-import { ImovelType } from '@/hooks/types'
+import { useState, FormEvent } from 'react';
+import { Button } from "@/components/ui/button";
+import { Card, CardContent, CardFooter, CardHeader, CardTitle } from "@/components/ui/card";
+import { Input } from "@/components/ui/input";
+import { Label } from "@/components/ui/label";
+import { Textarea } from "@/components/ui/textarea";
+import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
+import { Alert, AlertDescription } from "@/components/ui/alert";
+import { Separator } from "@/components/ui/separator";
+import { useToast } from '@/hooks/use-toast';
+import CadastroImoveis from '@/firebase/admin/cadastroImoveis';
+import { ImovelType } from '@/hooks/types';
+import { ref, uploadBytes, getDownloadURL } from 'firebase/storage';
+import { storage } from '@/firebase/firebaseConfig';
 
 export default function CadastroImoveisPage() {
     const { toast } = useToast();
 
-    const [propertyData, setPropertyData] = useState<ImovelType>({
+    const [propertyData, setPropertyData] = useState<ImovelType & { fotosPreviews: string[] }>({
         categoria: '',
         tipoImovel: '',
         tipoNegocio: '',
@@ -35,30 +37,33 @@ export default function CadastroImoveisPage() {
             nome: '',
             telefone: 0,
             email: ''
-        }
-    })
-    const [error, setError] = useState<string | null>(null)
-    const [isLoading, setIsLoading] = useState(false)
+        },
+        fotos: [],
+        fotosPreviews: [],
+        disponivel: true
+    });
+    const [error, setError] = useState<string | null>(null);
+    const [isLoading, setIsLoading] = useState(false);
 
     const handleInputChange = (e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>) => {
-        const { name, value } = e.target
+        const { name, value } = e.target;
         setPropertyData(prev => ({
             ...prev,
             [name]: name === 'quartos' || name === 'sala' || name === 'cozinha' ?
                 (value === '' ? 0 : parseInt(value, 10)) :
                 value
-        }))
-    }
+        }));
+    };
 
     const handleSelectChange = (name: string, value: string) => {
         setPropertyData(prev => ({
             ...prev,
             [name]: value
-        }))
-    }
+        }));
+    };
 
     const handleAddressChange = (e: React.ChangeEvent<HTMLInputElement>) => {
-        const { name, value } = e.target
+        const { name, value } = e.target;
         setPropertyData(prev => ({
             ...prev,
             endereco: {
@@ -67,27 +72,66 @@ export default function CadastroImoveisPage() {
                     (value === '' ? 0 : parseInt(value, 10)) :
                     value
             }
-        }))
-    }
+        }));
+    };
 
     const handleContactChange = (e: React.ChangeEvent<HTMLInputElement>) => {
-        const { name, value } = e.target
+        const { name, value } = e.target;
         setPropertyData(prev => ({
             ...prev,
             contato: {
                 ...prev.contato,
                 [name]: value
             }
-        }))
-    }
+        }));
+    };
+
+    const handlePhotoChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+        const files = Array.from(e.target.files || []);
+        const maxFiles = 10;
+        const selectedFiles = files.slice(0, maxFiles);
+
+        const newPreviews = selectedFiles.map(file => URL.createObjectURL(file));
+
+        setPropertyData(prev => ({
+            ...prev,
+            fotos: [...prev.fotos, ...selectedFiles].slice(0, maxFiles),
+            fotosPreviews: [...prev.fotosPreviews, ...newPreviews].slice(0, maxFiles)
+        }));
+    };
+
+    const removePhoto = (index: number) => {
+        setPropertyData(prev => ({
+            ...prev,
+            fotos: prev.fotos.filter((_, i) => i !== index),
+            fotosPreviews: prev.fotosPreviews.filter((_, i) => i !== index)
+        }));
+    };
 
     const handleSubmit = async (e: FormEvent) => {
-        e.preventDefault()
-        setError(null)
-        setIsLoading(true)
+        e.preventDefault();
+        setError(null);
+        setIsLoading(true);
 
         try {
-            await CadastroImoveis(propertyData);
+            const photoUrls = await Promise.all(
+                propertyData.fotos.map(async (foto, index) => {
+                    const storageRef = ref(storage, `imoveis/${Date.now()}_${index}`);
+                    const snapshot = await uploadBytes(storageRef, foto);
+                    return getDownloadURL(snapshot.ref);
+                })
+            );
+
+            const finalPropertyData = {
+                ...propertyData,
+                fotos: photoUrls,
+            };
+
+            await CadastroImoveis(finalPropertyData);
+
+            // Limpar as URLs de pré-visualização
+            propertyData.fotosPreviews.forEach(URL.revokeObjectURL);
+
             setPropertyData({
                 categoria: '',
                 tipoImovel: '',
@@ -109,8 +153,11 @@ export default function CadastroImoveisPage() {
                     nome: '',
                     telefone: 0,
                     email: ''
-                }
-            })
+                },
+                fotos: [],
+                fotosPreviews: [],
+                disponivel: true
+            });
             toast({
                 title: "Sucesso!",
                 description: "Cadastro feito com sucesso.",
@@ -129,10 +176,10 @@ export default function CadastroImoveisPage() {
                 variant: "destructive",
             });
         } finally {
-            setIsLoading(false)
+            setIsLoading(false);
         }
-    }
-    
+    };
+
     return (
         <div className="container mx-auto py-10 pb-32 ">
             <Card className="w-full max-w-4xl mx-auto">
@@ -217,6 +264,40 @@ export default function CadastroImoveisPage() {
                             </Label>
                             <Textarea value={propertyData.descricao} id="descricao" name="descricao" onChange={handleInputChange} required />
                         </div>
+                        <div className="space-y-2">
+                            <Label htmlFor="fotos">
+                                Fotos <span className="text-red-500">*</span>
+                                <span className="text-sm text-gray-500 ml-2">(Máximo 10 fotos)</span>
+                            </Label>
+                            <Input 
+                                type="file" 
+                                id="fotos" 
+                                name="fotos" 
+                                onChange={handlePhotoChange} 
+                                multiple 
+                                accept="image/*"
+                                required={propertyData.fotos.length === 0}
+                            />
+                        </div>
+                        <div className="grid grid-cols-2 md:grid-cols-5 gap-4 mt-4">
+                            {propertyData.fotosPreviews.map((preview, index) => (
+                                <div key={index} className="relative aspect-square">
+                                    <img
+                                        src={preview}
+                                        alt={`Preview ${index + 1}`}
+                                        className="object-cover rounded-md"
+                                    />
+                                    <button
+                                        type="button"
+                                        onClick={() => removePhoto(index)}
+                                        className="absolute top-0 right-0 bg-red-500 text-white rounded-full p-1 m-1"
+                                        aria-label="Remover foto"
+                                    >
+                                        X
+                                    </button>
+                                </div>
+                            ))}
+                        </div>
                         <Separator />
                         <div className="space-y-4">
                             <h3 className="text-lg font-semibold">Endereço</h3>
@@ -299,3 +380,4 @@ export default function CadastroImoveisPage() {
         </div>
     )
 }
+

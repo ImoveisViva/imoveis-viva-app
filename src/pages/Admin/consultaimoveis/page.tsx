@@ -1,4 +1,4 @@
-import { useState } from "react"
+import { useEffect, useState } from "react"
 import { Card, CardContent, CardTitle } from "@/components/ui/card"
 import { Input } from "@/components/ui/input"
 import { Label } from "@/components/ui/label"
@@ -20,76 +20,46 @@ import {
   SheetTitle,
   SheetTrigger,
 } from "@/components/ui/sheet"
+import {
+  Dialog,
+  DialogContent,
+  DialogDescription,
+  DialogHeader,
+  DialogTitle,
+} from "@/components/ui/dialog"
 import { ScrollArea } from "@/components/ui/scroll-area"
 import { Separator } from "@/components/ui/separator"
-import { Search, Filter, MapPin, Home, Building, TreePine, Bath, BedDouble, Ruler } from 'lucide-react'
-
-const imoveis = [
-  {
-    id: 1,
-    tipo: "Casa",
-    categoria: "Aluguel",
-    preco: 2500,
-    quartos: 3,
-    banheiros: 2,
-    area: 120,
-    endereco: "Rua A, 123 - Centro",
-    cidade: "São Paulo",
-    status: "Disponível",
-    imagem: "https://picsum.photos/seed/1/300/200"
-  },
-  {
-    id: 2,
-    tipo: "Apartamento",
-    categoria: "Venda",
-    preco: 450000,
-    quartos: 2,
-    banheiros: 1,
-    area: 70,
-    endereco: "Av. B, 456 - Jardins",
-    cidade: "São Paulo",
-    status: "Disponível",
-    imagem: "https://picsum.photos/seed/2/300/200"
-  },
-  {
-    id: 3,
-    tipo: "Terreno",
-    categoria: "Venda",
-    preco: 200000,
-    area: 500,
-    endereco: "Rua C, 789 - Vila Nova",
-    cidade: "Rio de Janeiro",
-    status: "Disponível",
-    imagem: "https://picsum.photos/seed/3/300/200"
-  },
-  {
-    id: 4,
-    tipo: "Casa",
-    categoria: "Aluguel",
-    preco: 3500,
-    quartos: 4,
-    banheiros: 3,
-    area: 180,
-    endereco: "Av. D, 1011 - Copacabana",
-    cidade: "Rio de Janeiro",
-    status: "Alugado",
-    imagem: "https://picsum.photos/seed/4/300/200"
-  },
-]
+import { Search, Filter, MapPin, Home, Building, TreePine, Bath, BedDouble, Ruler, Image } from 'lucide-react'
+import { ImovelType } from "@/hooks/types"
+import { GetImoveisDB } from "@/firebase/admin/getDashboard"
 
 export default function ConsultaImoveis() {
-  const filteredImoveis = imoveis
+  const [dataBD, setDataBD] = useState<ImovelType[]>([])
   const [searchTerm, setSearchTerm] = useState("")
   const [priceRange, setPriceRange] = useState([0, 1000000])
+  const [selectedImovel, setSelectedImovel] = useState<ImovelType | null>(null)
+  const [isModalOpen, setIsModalOpen] = useState(false)
 
-  const getStatusColor = (status: string) => {
-    switch (status.toLowerCase()) {
-      case "disponível":
+  useEffect(() => {
+    async function handleGetBD() {
+      try {
+        const data = await GetImoveisDB()
+        setDataBD(data)
+      } catch (error) {
+        console.log(error)
+      }
+    }
+    handleGetBD()
+  }, [])
+
+  const filteredImoveis = dataBD
+
+  const getStatusColor = (status: Boolean) => {
+    switch (status) {
+      case true:
         return "bg-green-500"
-      case "alugado":
+      case false:
         return "bg-blue-500"
-      case "vendido":
-        return "bg-gray-500"
       default:
         return "bg-yellow-500"
     }
@@ -106,6 +76,11 @@ export default function ConsultaImoveis() {
       default:
         return <Home className="h-5 w-5" />
     }
+  }
+
+  const openModal = (imovel: ImovelType) => {
+    setSelectedImovel(imovel)
+    setIsModalOpen(true)
   }
 
   return (
@@ -190,21 +165,25 @@ export default function ConsultaImoveis() {
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
           {filteredImoveis.map((imovel) => (
             <Card key={imovel.id} className="overflow-hidden">
-              <img src={imovel.imagem} alt={imovel.tipo} className="w-full h-48 object-cover" />
+              <img src={
+                imovel.fotos[0] instanceof File
+                  ? URL.createObjectURL(imovel.fotos[0])
+                  : imovel.fotos[0]
+              } alt={imovel.tipoImovel} className="w-full h-48 object-cover" />
               <CardContent className="p-6">
                 <div className="flex justify-between items-start mb-4">
                   <div>
                     <CardTitle className="text-xl mb-2 flex items-center gap-2">
-                      {getTipoIcon(imovel.tipo)}
-                      {imovel.tipo}
+                      {getTipoIcon(imovel.tipoImovel)}
+                      {imovel.tipoImovel}
                     </CardTitle>
                     <p className="text-sm text-muted-foreground flex items-center gap-1">
                       <MapPin className="h-4 w-4" />
-                      {imovel.endereco}
+                      {imovel.endereco.rua} {imovel.endereco.numero} - {imovel.endereco.bairro}
                     </p>
                   </div>
-                  <Badge className={getStatusColor(imovel.status)}>
-                    {imovel.status}
+                  <Badge className={getStatusColor(imovel.disponivel)}>
+                    {imovel.disponivel ? 'Disponível' : 'Indisponível'}
                   </Badge>
                 </div>
                 <div className="flex justify-between items-center mb-4">
@@ -223,22 +202,53 @@ export default function ConsultaImoveis() {
                       {imovel.quartos} quartos
                     </span>
                   )}
-                  {imovel.banheiros && (
+                  {imovel.quartos && (
                     <span className="flex items-center gap-1">
                       <Bath className="h-4 w-4" />
-                      {imovel.banheiros} banheiros
+                      {imovel.quartos} banheiros
                     </span>
                   )}
                   <span className="flex items-center gap-1">
                     <Ruler className="h-4 w-4" />
-                    {imovel.area} m²
+                    {imovel.quartos} m²
                   </span>
                 </div>
+                <Button
+                  variant="outline"
+                  className="w-full mt-4"
+                  onClick={() => openModal(imovel)}
+                >
+                  <Image className="mr-2 h-4 w-4" />
+                  Ver mais fotos
+                </Button>
               </CardContent>
             </Card>
           ))}
         </div>
       </ScrollArea>
+
+      <Dialog open={isModalOpen} onOpenChange={setIsModalOpen}>
+        <DialogContent className="max-w-4xl">
+          <DialogHeader>
+            <DialogTitle>{selectedImovel?.tipoImovel} - {selectedImovel?.endereco.rua} {selectedImovel?.endereco.numero}</DialogTitle>
+            <DialogDescription>Galeria de fotos do imóvel</DialogDescription>
+          </DialogHeader>
+          <div className="grid grid-cols-2 md:grid-cols-3 gap-4 mt-4">
+            {selectedImovel?.fotos.map((foto, index) => (
+              <img
+                key={index}
+                src={
+                  foto instanceof File
+                    ? URL.createObjectURL(foto)
+                    : foto
+                }
+                alt={`Foto ${index + 1} do imóvel`}
+                className="w-full h-48 object-cover rounded-md"
+              />
+            ))}
+          </div>
+        </DialogContent>
+      </Dialog>
     </div>
   )
 }
