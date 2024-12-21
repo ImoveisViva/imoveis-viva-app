@@ -13,6 +13,15 @@ import { ImovelType } from '@/hooks/types';
 import { ref, uploadBytes, getDownloadURL } from 'firebase/storage';
 import { storage } from '@/firebase/firebaseConfig';
 
+const formatPrice = (price: number): string => {
+    return price.toLocaleString('pt-BR', {
+        style: 'currency',
+        currency: 'BRL',
+        minimumFractionDigits: 2,
+        maximumFractionDigits: 2,
+    });
+};
+
 export default function CadastroImoveisPage() {
     const { toast } = useToast();
 
@@ -23,6 +32,8 @@ export default function CadastroImoveisPage() {
         quartos: 0,
         sala: 0,
         cozinha: 0,
+        banheiro: 0,
+        metros2: 0,
         preco: 0,
         descricao: '',
         endereco: {
@@ -47,12 +58,14 @@ export default function CadastroImoveisPage() {
 
     const handleInputChange = (e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>) => {
         const { name, value } = e.target;
-        setPropertyData(prev => ({
-            ...prev,
-            [name]: name === 'quartos' || name === 'sala' || name === 'cozinha' ?
-                (value === '' ? 0 : parseInt(value, 10)) :
-                value
-        }));
+        if (name !== 'preco') {
+            setPropertyData(prev => ({
+                ...prev,
+                [name]: name === 'quartos' || name === 'sala' || name === 'cozinha' || name === 'banheiro' || name === 'metros2' ?
+                    (value === '' ? 0 : parseInt(value, 10)) :
+                    value
+            }));
+        }
     };
 
     const handleSelectChange = (name: string, value: string) => {
@@ -139,6 +152,8 @@ export default function CadastroImoveisPage() {
                 quartos: 0,
                 sala: 0,
                 cozinha: 0,
+                banheiro: 0,
+                metros2: 0,
                 preco: 0,
                 descricao: '',
                 endereco: {
@@ -188,7 +203,7 @@ export default function CadastroImoveisPage() {
                 </CardHeader>
                 <form onSubmit={handleSubmit}>
                     <CardContent className="space-y-6">
-                        <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+                        <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
                             <div className="space-y-2">
                                 <Label htmlFor="categoria">
                                     Categoria <span className="text-red-500">*</span>
@@ -198,9 +213,9 @@ export default function CadastroImoveisPage() {
                                         <SelectValue placeholder="Selecione a categoria" />
                                     </SelectTrigger>
                                     <SelectContent>
-                                        <SelectItem value="destaque">Destaque</SelectItem>
-                                        <SelectItem value="promocao">Promoção</SelectItem>
-                                        <SelectItem value="comum">Comum</SelectItem>
+                                        <SelectItem value="Destaque">Destaque</SelectItem>
+                                        <SelectItem value="Promocao">Promoção</SelectItem>
+                                        <SelectItem value="Comum">Comum</SelectItem>
                                     </SelectContent>
                                 </Select>
                             </div>
@@ -213,9 +228,9 @@ export default function CadastroImoveisPage() {
                                         <SelectValue placeholder="Selecione o tipo" />
                                     </SelectTrigger>
                                     <SelectContent>
-                                        <SelectItem value="casa">Casa</SelectItem>
-                                        <SelectItem value="apartamento">Apartamento</SelectItem>
-                                        <SelectItem value="comercial">Comercial</SelectItem>
+                                        <SelectItem value="Casa">Casa</SelectItem>
+                                        <SelectItem value="Apartamento">Apartamento</SelectItem>
+                                        <SelectItem value="Comercial">Comercial</SelectItem>
                                     </SelectContent>
                                 </Select>
                             </div>
@@ -252,10 +267,35 @@ export default function CadastroImoveisPage() {
                                 <Input value={propertyData.cozinha.toString()} type="number" id="cozinha" name="cozinha" onChange={handleInputChange} min="0" required />
                             </div>
                             <div className="space-y-2">
+                                <Label htmlFor="banheiro">
+                                    Banheiros <span className="text-red-500">*</span>
+                                </Label>
+                                <Input value={propertyData.banheiro.toString()} type="number" id="banheiro" name="banheiro" onChange={handleInputChange} min="0" required />
+                            </div>
+                            <div className="space-y-2">
+                                <Label htmlFor="metros2">
+                                    m² <span className="text-red-500">*</span>
+                                </Label>
+                                <Input value={propertyData.metros2.toString()} type="number" id="metros2" name="metros2" onChange={handleInputChange} min="0" required />
+                            </div>
+                            <div className="space-y-2">
                                 <Label htmlFor="preco">
                                     Preço <span className="text-red-500">*</span>
                                 </Label>
-                                <Input value={propertyData.preco.toString()} type="number" id="preco" name="preco" onChange={handleInputChange} min="0" required />
+                                <Input
+                                    value={formatPrice(propertyData.preco)}
+                                    type="text"
+                                    id="preco"
+                                    name="preco"
+                                    onChange={(e) => {
+                                        const value = e.target.value.replace(/[^\d]/g, '');
+                                        setPropertyData(prev => ({
+                                            ...prev,
+                                            preco: parseInt(value) / 100
+                                        }));
+                                    }}
+                                    required
+                                />
                             </div>
                         </div>
                         <div className="space-y-2">
@@ -269,12 +309,12 @@ export default function CadastroImoveisPage() {
                                 Fotos <span className="text-red-500">*</span>
                                 <span className="text-sm text-gray-500 ml-2">(Máximo 10 fotos)</span>
                             </Label>
-                            <Input 
-                                type="file" 
-                                id="fotos" 
-                                name="fotos" 
-                                onChange={handlePhotoChange} 
-                                multiple 
+                            <Input
+                                type="file"
+                                id="fotos"
+                                name="fotos"
+                                onChange={handlePhotoChange}
+                                multiple
                                 accept="image/*"
                                 required={propertyData.fotos.length === 0}
                             />

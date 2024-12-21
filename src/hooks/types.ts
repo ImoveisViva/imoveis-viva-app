@@ -5,6 +5,8 @@ export interface ImovelType {
     quartos: number
     sala: number
     cozinha: number
+    banheiro: number
+    metros2: number
     preco: number
     descricao: string
     endereco: {

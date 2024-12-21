@@ -188,7 +188,7 @@ export default function ConsultaImoveis() {
                 </div>
                 <div className="flex justify-between items-center mb-4">
                   <span className="text-2xl font-bold">
-                    {imovel.categoria === "Aluguel"
+                    {imovel.tipoNegocio === "aluguel"
                       ? `R$ ${imovel.preco}/mês`
                       : `R$ ${imovel.preco.toLocaleString()}`}
                   </span>
@@ -202,15 +202,15 @@ export default function ConsultaImoveis() {
                       {imovel.quartos} quartos
                     </span>
                   )}
-                  {imovel.quartos && (
+                  {imovel.banheiro && (
                     <span className="flex items-center gap-1">
                       <Bath className="h-4 w-4" />
-                      {imovel.quartos} banheiros
+                      {imovel.banheiro} banheiros
                     </span>
                   )}
                   <span className="flex items-center gap-1">
                     <Ruler className="h-4 w-4" />
-                    {imovel.quartos} m²
+                    {imovel.metros2} m²
                   </span>
                 </div>
                 <Button
