@@ -26,10 +26,11 @@ import {
   DialogDescription,
   DialogHeader,
   DialogTitle,
+  DialogFooter,
 } from "@/components/ui/dialog"
 import { ScrollArea } from "@/components/ui/scroll-area"
 import { Separator } from "@/components/ui/separator"
-import { Search, Filter, MapPin, Home, Building, TreePine, Bath, BedDouble, Ruler, Image } from 'lucide-react'
+import { Search, Filter, MapPin, Home, Building, TreePine, Bath, BedDouble, Ruler, Image, Edit } from 'lucide-react'
 import { ImovelType } from "@/hooks/types"
 import { GetImoveisDB } from "@/firebase/admin/getDashboard"
 
@@ -39,6 +40,8 @@ export default function ConsultaImoveis() {
   const [priceRange, setPriceRange] = useState([0, 1000000])
   const [selectedImovel, setSelectedImovel] = useState<ImovelType | null>(null)
   const [isModalOpen, setIsModalOpen] = useState(false)
+  const [isEditModalOpen, setIsEditModalOpen] = useState(false)
+  const [editingImovel, setEditingImovel] = useState<ImovelType | null>(null)
 
   useEffect(() => {
     async function handleGetBD() {
@@ -82,6 +85,38 @@ export default function ConsultaImoveis() {
     setSelectedImovel(imovel)
     setIsModalOpen(true)
   }
+
+  const openEditModal = (imovel: ImovelType) => {
+    setEditingImovel(imovel)
+    setIsEditModalOpen(true)
+  }
+
+  const handleEditSubmit = (event: React.FormEvent<HTMLFormElement>) => {
+    event.preventDefault()
+    // Here you would typically update the database with the new values
+    // For now, we'll just update the local state
+    if (editingImovel) {
+      const updatedDataBD = dataBD.map(imovel => 
+        imovel.id === editingImovel.id 
+        ? {...imovel, tempoContratado: editingImovel.tempoContratado} 
+        : imovel
+      )
+      setDataBD(updatedDataBD)
+      setIsEditModalOpen(false)
+    }
+  }
+
+  const calculateRemainingTime = (tempoContratado: string) => {
+    const dias = parseInt(tempoContratado, 10);
+    if (isNaN(dias)) {
+      return 'Tempo de contrato inválido';
+    }
+    const dataInicio = new Date(); // Assumindo que o contrato começa hoje
+    const dataFim = new Date(dataInicio.getTime() + dias * 24 * 60 * 60 * 1000);
+    const diffTime = dataFim.getTime() - new Date().getTime();
+    const diffDays = Math.ceil(diffTime / (1000 * 60 * 60 * 24));
+    return diffDays > 0 ? `${diffDays} dias restantes` : 'Contrato expirado';
+  };
 
   return (
     <div className="p-8">
@@ -213,14 +248,29 @@ export default function ConsultaImoveis() {
                     {imovel.metros2} m²
                   </span>
                 </div>
-                <Button
-                  variant="outline"
-                  className="w-full mt-4"
-                  onClick={() => openModal(imovel)}
-                >
-                  <Image className="mr-2 h-4 w-4" />
-                  Ver mais fotos
-                </Button>
+                <Separator className="my-4" />
+                <div className="text-sm text-muted-foreground">
+                  <span className="font-semibold">Tempo de contrato:</span>{' '}
+                  {calculateRemainingTime(imovel.tempoContratado)}
+                </div>
+                <div className="flex gap-2 mt-4">
+                  <Button
+                    variant="outline"
+                    className="flex-1"
+                    onClick={() => openModal(imovel)}
+                  >
+                    <Image className="mr-2 h-4 w-4" />
+                    Ver fotos
+                  </Button>
+                  <Button
+                    variant="outline"
+                    className="flex-1"
+                    onClick={() => openEditModal(imovel)}
+                  >
+                    <Edit className="mr-2 h-4 w-4" />
+                    Editar
+                  </Button>
+                </div>
               </CardContent>
             </Card>
           ))}
@@ -247,6 +297,40 @@ export default function ConsultaImoveis() {
               />
             ))}
           </div>
+        </DialogContent>
+      </Dialog>
+
+      <Dialog open={isEditModalOpen} onOpenChange={setIsEditModalOpen}>
+        <DialogContent className="sm:max-w-[425px]">
+          <DialogHeader>
+            <DialogTitle>Editar Imóvel</DialogTitle>
+            <DialogDescription>
+              Faça as alterações necessárias e clique em salvar quando terminar.
+            </DialogDescription>
+          </DialogHeader>
+          <form onSubmit={handleEditSubmit}>
+            <div className="grid gap-4 py-4">
+              <div className="space-y-2">
+                <Label htmlFor="tempoContratado">Tempo de contrato</Label>
+                <Select
+                  value={editingImovel?.tempoContratado}
+                  onValueChange={(value) => setEditingImovel(prev => prev ? {...prev, tempoContratado: value} : null)}
+                >
+                  <SelectTrigger id="tempoContratado">
+                    <SelectValue placeholder="Selecione para alterar o tempo" />
+                  </SelectTrigger>
+                  <SelectContent>
+                    <SelectItem value="30">30 dias</SelectItem>
+                    <SelectItem value="90">3 meses</SelectItem>
+                    <SelectItem value="180">6 meses</SelectItem>
+                  </SelectContent>
+                </Select>
+              </div>
+            </div>
+            <DialogFooter>
+              <Button type="submit">Salvar mudanças</Button>
+            </DialogFooter>
+          </form>
         </DialogContent>
       </Dialog>
     </div>

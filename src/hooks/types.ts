@@ -25,4 +25,5 @@ export interface ImovelType {
     id?: string
     fotos: File[];
     disponivel: Boolean
+    tempoContratado: string
 }

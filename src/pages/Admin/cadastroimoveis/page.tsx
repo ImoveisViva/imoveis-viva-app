@@ -51,7 +51,8 @@ export default function CadastroImoveisPage() {
         },
         fotos: [],
         fotosPreviews: [],
-        disponivel: true
+        disponivel: true,
+        tempoContratado: '',
     });
     const [error, setError] = useState<string | null>(null);
     const [isLoading, setIsLoading] = useState(false);
@@ -125,11 +126,12 @@ export default function CadastroImoveisPage() {
         e.preventDefault();
         setError(null);
         setIsLoading(true);
+        const id_imovel = `${propertyData.endereco.latitude}_${propertyData.endereco.longitude}`;
 
         try {
             const photoUrls = await Promise.all(
                 propertyData.fotos.map(async (foto, index) => {
-                    const storageRef = ref(storage, `imoveis/${Date.now()}_${index}`);
+                    const storageRef = ref(storage, `imoveis/${id_imovel}/${Date.now()}_${index}`);
                     const snapshot = await uploadBytes(storageRef, foto);
                     return getDownloadURL(snapshot.ref);
                 })
@@ -138,11 +140,10 @@ export default function CadastroImoveisPage() {
             const finalPropertyData = {
                 ...propertyData,
                 fotos: photoUrls,
+                id_imovel,
             };
 
             await CadastroImoveis(finalPropertyData);
-
-            // Limpar as URLs de pré-visualização
             propertyData.fotosPreviews.forEach(URL.revokeObjectURL);
 
             setPropertyData({
@@ -171,7 +172,8 @@ export default function CadastroImoveisPage() {
                 },
                 fotos: [],
                 fotosPreviews: [],
-                disponivel: true
+                disponivel: true,
+                tempoContratado: '',
             });
             toast({
                 title: "Sucesso!",
@@ -243,8 +245,8 @@ export default function CadastroImoveisPage() {
                                         <SelectValue placeholder="Selecione o tipo" />
                                     </SelectTrigger>
                                     <SelectContent>
-                                        <SelectItem value="venda">Venda</SelectItem>
-                                        <SelectItem value="aluguel">Aluguel</SelectItem>
+                                        <SelectItem value="Venda">Venda</SelectItem>
+                                        <SelectItem value="Aluguel">Aluguel</SelectItem>
                                     </SelectContent>
                                 </Select>
                             </div>
@@ -296,6 +298,21 @@ export default function CadastroImoveisPage() {
                                     }}
                                     required
                                 />
+                            </div>
+                            <div className="space-y-2">
+                                <Label htmlFor="tempoContratado">
+                                    Tempo contratado <span className="text-red-500">*</span>
+                                </Label>
+                                <Select name="tempoContratado" value={propertyData.tempoContratado} onValueChange={(value) => handleSelectChange('tempoContratado', value)} required>
+                                    <SelectTrigger>
+                                        <SelectValue placeholder="Selecione o tempo" />
+                                    </SelectTrigger>
+                                    <SelectContent>
+                                        <SelectItem value="30">30 dias</SelectItem>
+                                        <SelectItem value="90">3 meses</SelectItem>
+                                        <SelectItem value="180">6 meses</SelectItem>
+                                    </SelectContent>
+                                </Select>
                             </div>
                         </div>
                         <div className="space-y-2">

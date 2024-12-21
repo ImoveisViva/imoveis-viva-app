@@ -42,14 +42,14 @@ export default function DashboardPro() {
   }, [])
 
   // CALCULANDO A MÉDIA DO ALUGUEIS ------------------------------------
-  const alugueis = dataBD.filter(imovel => imovel.tipoNegocio === "aluguel");
+  const alugueis = dataBD.filter(imovel => imovel.tipoNegocio === "Aluguel");
   const somaPreco = alugueis.reduce((total, imovel) => total + Number(imovel.preco), 0);
   const mediaPrecoAluguel = alugueis.length > 0 ? somaPreco / alugueis.length : 0;
 
   // TIPOS DE IMÓVEIS --------------------------------------------------
-  const casa = dataBD.filter(imovel => imovel.tipoImovel === 'casa');
-  const apartamento = dataBD.filter(imovel => imovel.tipoImovel === 'apartamento');
-  const comercial = dataBD.filter(imovel => imovel.tipoImovel === 'comercial');
+  const casa = dataBD.filter(imovel => imovel.tipoImovel === 'Casa');
+  const apartamento = dataBD.filter(imovel => imovel.tipoImovel === 'Apartamento');
+  const comercial = dataBD.filter(imovel => imovel.tipoImovel === 'Comercial');
 
   const tipoImoveis = [
     { name: 'Apartamento', value: apartamento.length, icon: Building },
@@ -58,9 +58,9 @@ export default function DashboardPro() {
   ]
 
   // CATEGORIA DE IMÓVEIS ----------------------------------------------
-  const comum = dataBD.filter(imovel => imovel.categoria === 'comum');
-  const promocao = dataBD.filter(imovel => imovel.categoria === 'promocao');
-  const destaque = dataBD.filter(imovel => imovel.categoria === 'destaque');
+  const comum = dataBD.filter(imovel => imovel.categoria === 'Comum');
+  const promocao = dataBD.filter(imovel => imovel.categoria === 'Promocao');
+  const destaque = dataBD.filter(imovel => imovel.categoria === 'Destaque');
 
   const categoriaImoveis = [
     { name: 'Destaque', Quantidade: destaque.length },
