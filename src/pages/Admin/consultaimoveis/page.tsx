@@ -9,10 +9,9 @@ import { ImovelType } from "@/hooks/types"
 import { GetImoveisDB } from "@/firebase/admin/getDashboard"
 import { doc, updateDoc } from "firebase/firestore"
 import { db } from "@/firebase/firebaseConfig"
-import { DialogHeader, DialogFooter } from "@/components/ui/dialog"
-import { Dialog, DialogContent, DialogTitle, DialogDescription } from "@radix-ui/react-dialog"
-import { Select, SelectTrigger, SelectValue, SelectContent, SelectItem } from "@radix-ui/react-select"
-import { Label } from "recharts"
+import { Dialog, DialogContent, DialogHeader, DialogTitle, DialogDescription, DialogFooter } from "@/components/ui/dialog"
+import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select"
+import { Label } from "@/components/ui/label"
 import { FilterComponent } from "../components/Filtro"
 
 export default function ConsultaImoveis() {
@@ -79,9 +78,10 @@ export default function ConsultaImoveis() {
   }
 
   const openEditModal = (imovel: ImovelType) => {
-    setEditingImovel(imovel)
-    setIsEditModalOpen(true)
-  }
+    setEditingImovel(imovel);
+    setIsEditModalOpen(true);
+    console.log("Opening edit modal for:", imovel.id); // Add this line for debugging
+  };
 
   const handleEditSubmit = async (event: React.FormEvent<HTMLFormElement>) => {
     event.preventDefault()
@@ -241,44 +241,46 @@ export default function ConsultaImoveis() {
               Faça as alterações necessárias e clique em salvar quando terminar.
             </DialogDescription>
           </DialogHeader>
-          <form onSubmit={handleEditSubmit}>
-            <div className="grid gap-4 py-4">
-              <div className="space-y-2">
-                <Label htmlFor="tempoContratado">Tempo de contrato</Label>
-                <Select
-                  value={editingImovel?.tempoContratado}
-                  onValueChange={(value) => setEditingImovel(prev => prev ? { ...prev, tempoContratado: value } : null)}
-                >
-                  <SelectTrigger id="tempoContratado">
-                    <SelectValue placeholder="Selecione para alterar o tempo" />
-                  </SelectTrigger>
-                  <SelectContent>
-                    <SelectItem value="30">30 dias</SelectItem>
-                    <SelectItem value="90">3 meses</SelectItem>
-                    <SelectItem value="180">6 meses</SelectItem>
-                  </SelectContent>
-                </Select>
+          {editingImovel && (
+            <form onSubmit={handleEditSubmit}>
+              <div className="grid gap-4 py-4">
+                <div className="space-y-2">
+                  <Label htmlFor="tempoContratado">Tempo de contrato</Label>
+                  <Select
+                    value={editingImovel.tempoContratado}
+                    onValueChange={(value) => setEditingImovel(prev => prev ? { ...prev, tempoContratado: value } : null)}
+                  >
+                    <SelectTrigger id="tempoContratado">
+                      <SelectValue placeholder="Selecione para alterar o tempo" />
+                    </SelectTrigger>
+                    <SelectContent>
+                      <SelectItem value="30">30 dias</SelectItem>
+                      <SelectItem value="90">3 meses</SelectItem>
+                      <SelectItem value="180">6 meses</SelectItem>
+                    </SelectContent>
+                  </Select>
+                </div>
+                <div className="space-y-2">
+                  <Label htmlFor="disponivel">Disponibilidade</Label>
+                  <Select
+                    value={editingImovel.disponivel ? "true" : "false"}
+                    onValueChange={(value) => setEditingImovel(prev => prev ? { ...prev, disponivel: value === "true" } : null)}
+                  >
+                    <SelectTrigger id="disponivel">
+                      <SelectValue placeholder="Selecione a disponibilidade" />
+                    </SelectTrigger>
+                    <SelectContent>
+                      <SelectItem value="true">Disponível</SelectItem>
+                      <SelectItem value="false">Indisponível</SelectItem>
+                    </SelectContent>
+                  </Select>
+                </div>
               </div>
-              <div className="space-y-2">
-                <Label htmlFor="disponivel">Disponibilidade</Label>
-                <Select
-                  value={editingImovel?.disponivel ? "true" : "false"}
-                  onValueChange={(value) => setEditingImovel(prev => prev ? { ...prev, disponivel: value === "true" } : null)}
-                >
-                  <SelectTrigger id="disponivel">
-                    <SelectValue placeholder="Selecione a disponibilidade" />
-                  </SelectTrigger>
-                  <SelectContent>
-                    <SelectItem value="true">Disponível</SelectItem>
-                    <SelectItem value="false">Indisponível</SelectItem>
-                  </SelectContent>
-                </Select>
-              </div>
-            </div>
-            <DialogFooter>
-              <Button type="submit">Salvar mudanças</Button>
-            </DialogFooter>
-          </form>
+              <DialogFooter>
+                <Button type="submit">Salvar mudanças</Button>
+              </DialogFooter>
+            </form>
+          )}
         </DialogContent>
       </Dialog>
     </div>
