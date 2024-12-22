@@ -1,4 +1,4 @@
-import { collection, addDoc } from "firebase/firestore";
+import { doc, setDoc } from "firebase/firestore";
 import { db } from "../firebaseConfig";
 
 type PropertyData = {
@@ -25,9 +25,10 @@ type PropertyData = {
     }
 }
 
-export default async function CadastroImoveis(data: PropertyData) {
+export default async function CadastroImoveis(data: PropertyData, id: string) {
     try {
-        await addDoc(collection(db, "imoveis"), data)
+        const docRef = doc(db, "imoveis", id)
+        await setDoc(docRef, data)
     } catch (error) {
         console.error("Erro ao adicionar o documento: ", error);
     }

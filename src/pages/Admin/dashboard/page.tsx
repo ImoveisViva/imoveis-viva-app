@@ -7,13 +7,6 @@ import { useEffect, useState } from "react"
 import { ImovelType } from "@/hooks/types"
 import { GetImoveisDB } from "@/firebase/admin/getDashboard"
 
-const imoveisVencendo = [
-  { id: 1, endereco: 'Rua A, 123', tipo: 'Casa', dataVencimento: '2023-07-15' },
-  { id: 2, endereco: 'Av. B, 456', tipo: 'Apartamento', dataVencimento: '2023-07-20' },
-  { id: 3, endereco: 'Rua C, 789', tipo: 'Casa', dataVencimento: '2023-07-25' },
-  { id: 4, endereco: 'Av. D, 1011', tipo: 'Terreno', dataVencimento: '2023-07-30' },
-]
-
 const historicoAlugueis = [
   { mes: 'Jan', valor: 2300 },
   { mes: 'Fev', valor: 2400 },
@@ -67,6 +60,21 @@ export default function DashboardPro() {
     { name: 'Promoção', Quantidade: promocao.length },
     { name: 'Comum', Quantidade: comum.length },
   ]
+
+  // FUNÇÃO PARA CALCULAR DIAS RESTANTES DO CONTRATO ---------------------------
+  const calculateRemainingDays = (tempoContratado: string) => {
+    const dias = parseInt(tempoContratado, 10);
+    if (isNaN(dias)) return -1;
+    const dataFim = new Date(Date.now() + dias * 24 * 60 * 60 * 1000);
+    const diffTime = dataFim.getTime() - Date.now();
+    return Math.ceil(diffTime / (1000 * 60 * 60 * 24));
+  };
+
+  // FILTRAR CONTRATOS COM MENOS DE 30 DIAS RESTANTES --------------------------
+  const contratosProximos = dataBD.filter((imovel) => {
+    const diasRestantes = calculateRemainingDays(imovel.tempoContratado);
+    return diasRestantes > 0 && diasRestantes <= 30;
+  });
 
   return (
     <div className="p-8 bg-gray-50 min-h-screen">
@@ -181,14 +189,19 @@ export default function DashboardPro() {
               </TableRow>
             </TableHeader>
             <TableBody>
-              {imoveisVencendo.map((imovel) => (
+              {contratosProximos.map((imovel) => (
                 <TableRow key={imovel.id}>
                   <TableCell>{imovel.id}</TableCell>
-                  <TableCell>{imovel.endereco}</TableCell>
-                  <TableCell>{imovel.tipo}</TableCell>
-                  <TableCell>{imovel.dataVencimento}</TableCell>
+                  <TableCell>{imovel.endereco.rua} {imovel.endereco.numero} - {imovel.endereco.bairro}</TableCell>
+                  <TableCell>{imovel.tipoImovel}</TableCell>
+                  <TableCell>{calculateRemainingDays(imovel.tempoContratado)} dias</TableCell>
                 </TableRow>
               ))}
+              {contratosProximos.length === 0 && (
+                <TableRow>
+                  <TableCell colSpan={4} className="text-center">Nenhum contrato próximo do vencimento</TableCell>
+                </TableRow>
+              )}
             </TableBody>
           </Table>
         </CardContent>

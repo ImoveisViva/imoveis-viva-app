@@ -80,7 +80,7 @@ export default function ConsultaImoveis() {
   const openEditModal = (imovel: ImovelType) => {
     setEditingImovel(imovel);
     setIsEditModalOpen(true);
-    console.log("Opening edit modal for:", imovel.id); // Add this line for debugging
+    console.log("Opening edit modal for:", imovel.id);
   };
 
   const handleEditSubmit = async (event: React.FormEvent<HTMLFormElement>) => {

@@ -1,4 +1,4 @@
-import { useState, FormEvent } from 'react';
+import { useState, FormEvent, useEffect } from 'react';
 import { Button } from "@/components/ui/button";
 import { Card, CardContent, CardFooter, CardHeader, CardTitle } from "@/components/ui/card";
 import { Input } from "@/components/ui/input";
@@ -12,6 +12,7 @@ import CadastroImoveis from '@/firebase/admin/cadastroImoveis';
 import { ImovelType } from '@/hooks/types';
 import { ref, uploadBytes, getDownloadURL } from 'firebase/storage';
 import { storage } from '@/firebase/firebaseConfig';
+import { GetImoveisDB } from '@/firebase/admin/getDashboard';
 
 const formatPrice = (price: number): string => {
     return price.toLocaleString('pt-BR', {
@@ -54,8 +55,21 @@ export default function CadastroImoveisPage() {
         disponivel: true,
         tempoContratado: '',
     });
+    const [dataBD, setDataBD] = useState<ImovelType[]>([])
     const [error, setError] = useState<string | null>(null);
     const [isLoading, setIsLoading] = useState(false);
+
+    useEffect(() => {
+        async function handleGetBD() {
+            try {
+                const data = await GetImoveisDB()
+                setDataBD(data)
+            } catch (error) {
+                console.log(error)
+            }
+        }
+        handleGetBD()
+    }, [])
 
     const handleInputChange = (e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>) => {
         const { name, value } = e.target;
@@ -137,13 +151,15 @@ export default function CadastroImoveisPage() {
                 })
             );
 
+            const newId = String(dataBD.length + 1).padStart(4, "0");
+
             const finalPropertyData = {
                 ...propertyData,
                 fotos: photoUrls,
-                id_imovel,
+                id_imovel: newId,
             };
 
-            await CadastroImoveis(finalPropertyData);
+            await CadastroImoveis(finalPropertyData, newId);
             propertyData.fotosPreviews.forEach(URL.revokeObjectURL);
 
             setPropertyData({
