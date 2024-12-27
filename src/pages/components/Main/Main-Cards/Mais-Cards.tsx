@@ -3,6 +3,7 @@ import { Cards } from "../Cards/Cards";
 import { ImovelType } from "@/hooks/types";
 import { GetImoveisDB } from "@/firebase/admin/getDashboard";
 import { Loader2 } from "lucide-react";
+import { Link } from "react-router-dom";
 
 export function MainCards() {
     const [dataBD, setDataBD] = useState<ImovelType[]>([]);
@@ -34,7 +35,9 @@ export function MainCards() {
     return (
         <div className="flex flex-wrap justify-center">
             {dataBD.map((imovel) => (
-                <Cards key={imovel.id} imovel={imovel} />
+                <Link to={`/estate/${imovel.id}`} key={imovel.id}>
+                    <Cards key={imovel.id} imovel={imovel} />
+                </Link>
             ))}
         </div>
     )

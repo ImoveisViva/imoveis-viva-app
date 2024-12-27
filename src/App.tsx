@@ -8,6 +8,7 @@ import CadastroImoveisPage from './pages/Admin/cadastroimoveis/page';
 import ConsultarImoveisPage from './pages/Admin/consultaimoveis/page';
 import DashboardPage from './pages/Admin/dashboard/page';
 import { Mapa } from './pages/Admin/mapa/page';
+import { CardDetails } from './pages/CardsDetails';
 
 export function App() {
   return (
@@ -16,6 +17,7 @@ export function App() {
         <Routes>
           <Route path="/" element={<Home />} />
           <Route path='/*' element={<Home />} />
+          <Route path='/estate/:id' element={<CardDetails />} />
           <Route path="/login" element={<LoginForm />} />
           <Route path="/admin" element={<AdminDashboard />}>
             <Route path='/admin' element={<DashboardPage />} />
