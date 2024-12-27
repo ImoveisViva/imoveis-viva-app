@@ -1,17 +1,16 @@
-'use client'
-
 import { Button } from '@/components/ui/button'
-import { Card, CardContent, CardFooter, CardHeader, CardTitle } from '@/components/ui/card'
+import { Card } from '@/components/ui/card'
 import { GetCardDB } from '@/firebase/admin/getDashboard'
 import { ImovelType } from '@/hooks/types'
-import { Building2, Mail, MapPin, Phone, Ruler, ShowerHeadIcon as Shower } from 'lucide-react'
+import { ArrowLeft } from 'lucide-react'
 import { useState, useEffect } from 'react'
-import { useParams, useNavigate } from 'react-router-dom'
+import { useNavigate, useParams } from 'react-router-dom'
+import { Maps } from '../components/Maps/Maps'
 
 export const CardDetails = () => {
     const { id } = useParams()
-    const navigate = useNavigate()
     const [dataBD, setDataBD] = useState<ImovelType[]>([])
+    const navigate = useNavigate()
     const [loading, setLoading] = useState(false)
 
     useEffect(() => {
@@ -43,91 +42,70 @@ export const CardDetails = () => {
     if (!property) return null
 
     return (
-        <div>
-            <h1>PÁGINA DE DETALHES DO CARD ESCOLHIDO</h1>
-            <Card className="mx-auto max-w-2xl">
-                <CardHeader>
-                    <CardTitle className="flex items-center justify-between">
-                        <span>Detalhes do Imóvel</span>
-                        <span className="text-sm text-muted-foreground">ID: {id}</span>
-                    </CardTitle>
-                </CardHeader>
-                <CardContent className="grid gap-6">
+        <div className='px-44'>
+            <Button className='my-5' onClick={() => navigate('/')}>
+                <ArrowLeft className="mr-2 h-4 w-4" /> Voltar
+            </Button>
+
+            <div className='flex justify-center gap-2'>
+                <div className="w-[70%]">
                     {property.fotos && property.fotos.length > 0 && (
-                        <div className="aspect-video overflow-hidden rounded-lg">
-                            <img
-                                src={
-                                    property.fotos[0] instanceof File
-                                        ? URL.createObjectURL(property.fotos[0])
-                                        : property.fotos[0]
-                                }
-                                alt="Imóvel"
-                                className="h-full w-full object-cover"
-                            />
+                        <div className="grid grid-cols-1 md:grid-cols-[2fr,1fr] gap-1">
+                            {/* Main large image */}
+                            <div className="relative aspect-[3/3] rounded-sm overflow-hidden">
+                                <img
+                                    src={
+                                        property.fotos[0] instanceof File
+                                            ? URL.createObjectURL(property.fotos[0])
+                                            : property.fotos[0]
+                                    }
+                                    alt="Imóvel vista principal"
+                                    className="absolute inset-0 object-cover h-full w-full"
+                                />
+                            </div>
+
+                            {/* Right side smaller images */}
+                            <div className="hidden md:grid grid-rows-2 gap-1">
+                                {property.fotos.slice(1, 3).map((foto, index) => (
+                                    <div key={index} className="relative rounded-sm overflow-hidden">
+                                        <img
+                                            src={
+                                                foto instanceof File
+                                                    ? URL.createObjectURL(foto)
+                                                    : foto
+                                            }
+                                            alt={`Imóvel vista ${index + 2}`}
+                                            className="absolute inset-0 h-full w-full object-cover"
+                                        />
+                                    </div>
+                                ))}
+                            </div>
+
+                            {/* Bottom row of images */}
+                            <div className="hidden md:grid grid-cols-3 gap-1 col-span-2">
+                                {property.fotos.slice(3, 6).map((foto, index) => (
+                                    <div key={index} className="relative aspect-[4/3] rounded-sm overflow-hidden">
+                                        <img
+                                            src={
+                                                foto instanceof File
+                                                    ? URL.createObjectURL(foto)
+                                                    : foto
+                                            }
+                                            alt={`Imóvel vista ${index + 4}`}
+                                            className="absolute inset-0 h-full w-full object-cover"
+                                        />
+                                    </div>
+                                ))}
+                            </div>
                         </div>
                     )}
+                </div>
+                <Card className='flex w-[30%] p-4 justify-center'>
+                    <h1 className='font-bold'>Apartamento não sei oque</h1>
+                </Card>
+            </div>
 
-                    <div className="grid gap-4">
-                        <div className="grid gap-2">
-                            <h3 className="text-xl font-semibold">
-                                {property.tipoNegocio === 'Aluguel' ? 'Para Alugar' : 'Para Vender'}
-                            </h3>
-                            <p className="text-2xl font-bold">
-                                R$ {Number(property.preco).toLocaleString('pt-BR')}
-                            </p>
-                        </div>
-
-                        <div className="grid gap-2">
-                            <div className="flex items-center gap-2">
-                                <MapPin className="h-4 w-4 text-muted-foreground" />
-                                <span>{property.endereco.bairro}, {property.endereco.cidade}</span>
-                            </div>
-                            <div className="grid grid-cols-2 gap-4">
-                                <div className="flex items-center gap-2">
-                                    <Building2 className="h-4 w-4 text-muted-foreground" />
-                                    <span>{property.quartos} Quartos</span>
-                                </div>
-                                <div className="flex items-center gap-2">
-                                    <Shower className="h-4 w-4 text-muted-foreground" />
-                                    <span>{property.banheiro} Banheiros</span>
-                                </div>
-                                <div className="flex items-center gap-2">
-                                    <Ruler className="h-4 w-4 text-muted-foreground" />
-                                    <span>{property.metros2}m²</span>
-                                </div>
-                            </div>
-                        </div>
-
-                        <div className="grid gap-2">
-                            <h4 className="font-semibold">Contato</h4>
-                            <div className="flex items-center gap-2">
-                                <Mail className="h-4 w-4 text-muted-foreground" />
-                                <span>{property.contato.email}</span>
-                            </div>
-                            <div className="flex items-center gap-2">
-                                <Phone className="h-4 w-4 text-muted-foreground" />
-                                <span>{property.contato.telefone}</span>
-                            </div>
-                        </div>
-
-                        {property.descricao && (
-                            <div className="grid gap-2">
-                                <h4 className="font-semibold">Descrição</h4>
-                                <p className="text-sm text-muted-foreground">{property.descricao}</p>
-                            </div>
-                        )}
-                    </div>
-                </CardContent>
-                <CardFooter>
-                    <Button
-                        onClick={() => navigate('/')}
-                        className="w-full"
-                    >
-                        Voltar para Home
-                    </Button>
-                </CardFooter>
-            </Card>
+            <Maps latitude={property.endereco.latitude} longitude={property.endereco.longitude} />
         </div>
     )
 }
-
