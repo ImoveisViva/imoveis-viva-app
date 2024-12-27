@@ -115,16 +115,16 @@ export const CardDetails = () => {
                                         {property.banheiro} Banheiros
                                     </span>
                                 ) : null}
-                                {property.metros2 > 0 ? (
+                                {property.sala > 0 ? (
                                     <span className="flex items-center gap-1 sm:gap-2 text-sm sm:text-base">
                                         <Armchair className="h-4 w-4 sm:h-5 sm:w-5 text-[#3b82f6]" />
-                                        {property.metros2} Sala
+                                        {property.sala} Sala
                                     </span>
                                 ) : null}
                                 {property.cozinha > 0 ? (
                                     <span className="flex items-center gap-1 sm:gap-2 text-sm sm:text-base">
                                         <Utensils className="h-4 w-4 sm:h-5 sm:w-5 text-[#3b82f6]" />
-                                        {property.metros2} Cozinha
+                                        {property.cozinha} Cozinha
                                     </span>
                                 ) : null}
                                 {property.metros2 > 0 ? (
