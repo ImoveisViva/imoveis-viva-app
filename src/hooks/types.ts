@@ -26,5 +26,5 @@ export interface ImovelType {
     fotos: File[];
     disponivel: Boolean
     tempoContratado: string
-    data: any
+    data?: Date | undefined
 }

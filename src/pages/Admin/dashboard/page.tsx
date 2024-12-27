@@ -65,10 +65,11 @@ export default function DashboardPro() {
   // ---------------------------------------------------------------------------
   const contratosProximos = dataBD.filter((imovel) => {
     const diasRestantes = calculateRemainingDays(imovel.tempoContratado);
-    return diasRestantes > 0 && diasRestantes <= 30;
+    return diasRestantes > 0 && diasRestantes <= 30 && imovel.disponivel;
   });
 
-  function quantosDiasFaltam(data: string): number {
+  function quantosDiasFaltam(data?: Date): number {
+    if (!data) return 0;
     const dataCriacao = new Date(data);
     const dataFinalContrato = new Date(dataCriacao.getTime() + 30 * 24 * 60 * 60 * 1000);
     const hoje = new Date();
@@ -211,7 +212,11 @@ export default function DashboardPro() {
                   <TableCell>{imovel.id}</TableCell>
                   <TableCell>{imovel.endereco.rua} {imovel.endereco.numero} - {imovel.endereco.bairro}</TableCell>
                   <TableCell>{imovel.tipoImovel}</TableCell>
-                  <TableCell>{quantosDiasFaltam(imovel.data)} dias</TableCell>
+                  <TableCell className={`${quantosDiasFaltam(imovel.data) <= 10 ? 'text-red-700' : 'text-green-500'} font-bold`}>
+                    {quantosDiasFaltam(imovel.data) == 0 ? 'Vencido'
+                      :
+                      `${quantosDiasFaltam(imovel.data)} dias`}
+                  </TableCell>
                 </TableRow>
               ))}
               {contratosProximos.length === 0 && (
