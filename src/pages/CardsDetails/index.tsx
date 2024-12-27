@@ -154,7 +154,7 @@ export const CardDetails = () => {
                     </Card>
                 </div>
 
-                <div className="my-8">
+                <div className="my-4">
                     <Maps latitude={property.endereco.latitude} longitude={property.endereco.longitude} theme={'light'} />
                 </div>
             </div>
