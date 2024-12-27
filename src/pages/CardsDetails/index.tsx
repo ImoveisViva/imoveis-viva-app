@@ -2,7 +2,7 @@ import { Button } from '@/components/ui/button'
 import { Card } from '@/components/ui/card'
 import { GetCardDB } from '@/firebase/admin/getDashboard'
 import { ImovelType } from '@/hooks/types'
-import { Armchair, ArrowLeft, Bath, Bed, Mail, Phone, Utensils } from 'lucide-react'
+import { Armchair, ArrowLeft, Bath, Bed, Mail, Phone, Ruler, Utensils } from 'lucide-react'
 import { useState, useEffect } from 'react'
 import { useNavigate, useParams } from 'react-router-dom'
 import { Maps } from '../components/Maps/Maps'
@@ -121,9 +121,15 @@ export const CardDetails = () => {
                                         {property.metros2} Sala
                                     </span>
                                 ) : null}
-                                {property.metros2 > 0 ? (
+                                {property.cozinha > 0 ? (
                                     <span className="flex items-center gap-1 sm:gap-2 text-sm sm:text-base">
                                         <Utensils className="h-4 w-4 sm:h-5 sm:w-5 text-[#3b82f6]" />
+                                        {property.metros2} Cozinha
+                                    </span>
+                                ) : null}
+                                {property.metros2 > 0 ? (
+                                    <span className="flex items-center gap-1 sm:gap-2 text-sm sm:text-base">
+                                        <Ruler className="h-4 w-4 sm:h-5 sm:w-5 text-[#3b82f6]" />
                                         {property.metros2}m²
                                     </span>
                                 ) : null}
