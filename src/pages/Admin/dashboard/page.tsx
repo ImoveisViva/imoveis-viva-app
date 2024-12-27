@@ -1,25 +1,16 @@
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card"
 import { Progress } from "@/components/ui/progress"
 import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from "@/components/ui/table"
-import { PieChart, Pie, Cell, BarChart, Bar, XAxis, YAxis, Tooltip, Legend, ResponsiveContainer, LineChart, Line } from 'recharts'
+import { PieChart, Pie, Cell, BarChart, Bar, XAxis, YAxis, Tooltip, Legend, ResponsiveContainer } from 'recharts'
 import { Building, Home, Landmark } from 'lucide-react'
 import { useEffect, useState } from "react"
 import { ImovelType } from "@/hooks/types"
 import { GetImoveisDB } from "@/firebase/admin/getDashboard"
 
-const historicoAlugueis = [
-  { mes: 'Jan', valor: 2300 },
-  { mes: 'Fev', valor: 2400 },
-  { mes: 'Mar', valor: 2450 },
-  { mes: 'Abr', valor: 2500 },
-  { mes: 'Mai', valor: 2550 },
-  { mes: 'Jun', valor: 2600 },
-]
-
 export default function DashboardPro() {
   const [dataBD, setDataBD] = useState<ImovelType[]>([]);
   const totalImoveis = dataBD?.length
-  const metaImoveis = 1200
+  const metaImoveis = 50
   const progressoMeta = (totalImoveis / metaImoveis) * 100
 
   useEffect(() => {
@@ -34,12 +25,13 @@ export default function DashboardPro() {
     handleGetBD()
   }, [])
 
-  // CALCULANDO A MÉDIA DO ALUGUEIS ------------------------------------
+  // CALCULANDO A MÉDIA DO ALUGUEIS --------------------------------------------
   const alugueis = dataBD.filter(imovel => imovel.tipoNegocio === "Aluguel");
   const somaPreco = alugueis.reduce((total, imovel) => total + Number(imovel.preco), 0);
   const mediaPrecoAluguel = alugueis.length > 0 ? somaPreco / alugueis.length : 0;
+  const precoMedioFormatado = (mediaPrecoAluguel.toLocaleString('pt-BR', { style: 'currency', currency: 'BRL' }))
 
-  // TIPOS DE IMÓVEIS --------------------------------------------------
+  // TIPOS DE IMÓVEIS ----------------------------------------------------------
   const casa = dataBD.filter(imovel => imovel.tipoImovel === 'Casa');
   const apartamento = dataBD.filter(imovel => imovel.tipoImovel === 'Apartamento');
   const comercial = dataBD.filter(imovel => imovel.tipoImovel === 'Comercial');
@@ -50,7 +42,7 @@ export default function DashboardPro() {
     { name: 'Outros', value: comercial.length, icon: Landmark },
   ]
 
-  // CATEGORIA DE IMÓVEIS ----------------------------------------------
+  // CATEGORIA DE IMÓVEIS ------------------------------------------------------
   const comum = dataBD.filter(imovel => imovel.categoria === 'Comum');
   const promocao = dataBD.filter(imovel => imovel.categoria === 'Promocao');
   const destaque = dataBD.filter(imovel => imovel.categoria === 'Destaque');
@@ -61,7 +53,7 @@ export default function DashboardPro() {
     { name: 'Comum', Quantidade: comum.length },
   ]
 
-  // FUNÇÃO PARA CALCULAR DIAS RESTANTES DO CONTRATO ---------------------------
+  // --------------------------------------------------------------------------
   const calculateRemainingDays = (tempoContratado: string) => {
     const dias = parseInt(tempoContratado, 10);
     if (isNaN(dias)) return -1;
@@ -70,11 +62,34 @@ export default function DashboardPro() {
     return Math.ceil(diffTime / (1000 * 60 * 60 * 24));
   };
 
-  // FILTRAR CONTRATOS COM MENOS DE 30 DIAS RESTANTES --------------------------
+  // ---------------------------------------------------------------------------
   const contratosProximos = dataBD.filter((imovel) => {
     const diasRestantes = calculateRemainingDays(imovel.tempoContratado);
     return diasRestantes > 0 && diasRestantes <= 30;
   });
+
+  function quantosDiasFaltam(data: string): number {
+    const dataCriacao = new Date(data);
+    const dataFinalContrato = new Date(dataCriacao.getTime() + 30 * 24 * 60 * 60 * 1000);
+    const hoje = new Date();
+    const diferenca = dataFinalContrato.getTime() - hoje.getTime();
+    return Math.ceil(diferenca / (1000 * 60 * 60 * 24));
+  }
+
+  const calcularImoveisPorBairro = () => {
+    const imoveisPorBairro = dataBD.reduce((acc, imovel) => {
+      const bairro = imovel.endereco.bairro;
+      acc[bairro] = (acc[bairro] || 0) + 1;
+      return acc;
+    }, {} as Record<string, number>);
+
+    return Object.entries(imoveisPorBairro)
+      .map(([bairro, quantidade]) => ({ bairro, quantidade }))
+      .sort((a, b) => b.quantidade - a.quantidade)
+      .slice(0, 6);
+  };
+
+  const imoveisPorBairro = calcularImoveisPorBairro();
 
   return (
     <div className="p-8 bg-gray-50 min-h-screen">
@@ -100,22 +115,24 @@ export default function DashboardPro() {
             <Landmark className="h-4 w-4 text-muted-foreground" />
           </CardHeader>
           <CardContent>
-            <div className="text-2xl font-bold">R${mediaPrecoAluguel.toFixed(2)}</div>
+            <div className="text-2xl font-bold">
+              {precoMedioFormatado}
+            </div>
           </CardContent>
         </Card>
 
         <Card className="shadow-lg col-span-2">
           <CardHeader>
-            <CardTitle className="text-sm font-medium">Histórico de Aluguéis</CardTitle>
+            <CardTitle className="text-sm font-medium">Quantidade de Imóveis por Bairro (Top 6)</CardTitle>
           </CardHeader>
           <CardContent>
-            <ResponsiveContainer width="100%" height={200}>
-              <LineChart data={historicoAlugueis}>
-                <XAxis dataKey="mes" />
-                <YAxis />
+            <ResponsiveContainer width="100%" height={300}>
+              <BarChart data={imoveisPorBairro} layout="vertical" margin={{ left: 20, right: 20, top: 20, bottom: 20 }}>
+                <XAxis type="number" />
+                <YAxis dataKey="bairro" type="category" width={100} />
                 <Tooltip />
-                <Line type="monotone" dataKey="valor" stroke="#8884d8" />
-              </LineChart>
+                <Bar dataKey="quantidade" fill="#8884d8" />
+              </BarChart>
             </ResponsiveContainer>
           </CardContent>
         </Card>
@@ -194,7 +211,7 @@ export default function DashboardPro() {
                   <TableCell>{imovel.id}</TableCell>
                   <TableCell>{imovel.endereco.rua} {imovel.endereco.numero} - {imovel.endereco.bairro}</TableCell>
                   <TableCell>{imovel.tipoImovel}</TableCell>
-                  <TableCell>{calculateRemainingDays(imovel.tempoContratado)} dias</TableCell>
+                  <TableCell>{quantosDiasFaltam(imovel.data)} dias</TableCell>
                 </TableRow>
               ))}
               {contratosProximos.length === 0 && (

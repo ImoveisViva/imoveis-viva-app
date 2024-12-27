@@ -157,6 +157,7 @@ export default function CadastroImoveisPage() {
                 ...propertyData,
                 fotos: photoUrls,
                 id_imovel: newId,
+                data: new Date().toISOString(),
             };
 
             await CadastroImoveis(finalPropertyData, newId);
