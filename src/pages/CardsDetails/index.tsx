@@ -10,6 +10,7 @@ import { Footer } from '../components/Footer/Footer'
 import { useMediaQuery } from '@/hooks/use-media-query'
 import { ImageCarousel } from '../components/Carousel/Carousel'
 import { ModalImageGallery } from '../components/Carousel/ModalGalerry'
+import { Header } from '../components/Header/Header'
 
 export function formatCurrency(value: number): string {
     return new Intl.NumberFormat('pt-BR', {
@@ -60,6 +61,7 @@ export const CardDetails = () => {
     return (
         <>
             <div className='px-4 sm:px-6 md:px-8 lg:px-12 xl:px-16 2xl:px-44 max-w-screen-2xl mx-auto'>
+                <Header isHome={false} />
                 <Button className='my-5 bg-[#3b82f6] hover:bg-blue-600' onClick={() => navigate('/')}>
                     <ArrowLeft className="mr-2 h-4 w-4" /> Voltar
                 </Button>

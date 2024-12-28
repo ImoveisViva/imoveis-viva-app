@@ -5,7 +5,7 @@ import { MainCardsDestaque } from "../components/Main/Main-Cards/Mais-Cards";
 export function Home() {
     return (
         <div>
-            <Header />
+            <Header isHome={true}/>
             <MainCardsDestaque />
             <Footer />
         </div>

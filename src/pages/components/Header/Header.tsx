@@ -1,7 +1,20 @@
-export function Header() {
+interface Propstype {
+    isHome: boolean;
+}
+
+export function Header({ isHome }: Propstype) {
     return (
         <div>
-            Header HOME
+            {isHome ? (
+                <div>
+                    Home
+                </div>
+            ) : (
+                <div>
+                    nao home
+                </div>
+            )
+            }
         </div>
     )
 }
