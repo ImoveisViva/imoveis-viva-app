@@ -30,7 +30,7 @@ export function Header({ isHome }: PropType) {
                             Comprar
                         </Link>
                     </div>
-                    <button className="bg-[#3b82f6] hover:bg-blue-600 text-white font-semibold py-2 px-4 rounded text-sm">
+                    <button className="bg-[#3b82f6] hover:bg-blue-600 text-white font-semibold py-2 px-4 rounded-md text-sm">
                         Anunciar imóvel
                     </button>
                 </div>
