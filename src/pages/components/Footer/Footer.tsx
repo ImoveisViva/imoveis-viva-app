@@ -3,8 +3,8 @@ import svgInsta from '../../../../public/assets/svg/instagram.svg'
 export function Footer() {
     return (
         <>
-            <div className="bg-white border-t border-gray-200 px-44">
-                <div className="container mx-auto px-4 sm:px-6 lg:px-8 py-8 sm:py-10">
+            <div className="border-t border-gray-200 px-44 bg-red">
+                <div className="container mx-auto py-8 sm:py-10">
                     <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-8">
                         <div className="col-span-1">
                             <h1 className="text-2xl font-bold text-[#3b82f6]">Imóveis Viva</h1>

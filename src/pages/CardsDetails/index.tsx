@@ -2,7 +2,7 @@ import { Button } from '@/components/ui/button'
 import { Card } from '@/components/ui/card'
 import { GetCardDB } from '@/firebase/admin/getDashboard'
 import { ImovelType } from '@/hooks/types'
-import { Armchair, ArrowLeft, Bath, Bed, Mail, Phone, Ruler, Utensils } from 'lucide-react'
+import { Armchair, Bath, Bed, Mail, Phone, Ruler, Utensils, MoveLeft } from 'lucide-react'
 import { useState, useEffect } from 'react'
 import { useNavigate, useParams } from 'react-router-dom'
 import { Maps } from '../components/Maps/Maps'
@@ -62,9 +62,10 @@ export const CardDetails = () => {
         <>
             <div className='px-4 sm:px-6 md:px-8 lg:px-12 xl:px-16 2xl:px-44 max-w-screen-2xl mx-auto'>
                 <Header isHome={false} />
-                <Button className='my-5 bg-[#3b82f6] hover:bg-blue-600' onClick={() => navigate('/')}>
-                    <ArrowLeft className="mr-2 h-4 w-4" /> Voltar
-                </Button>
+                <div onClick={() => navigate('/')}
+                    className='flex items-center text-[#3b82f6] text-[15px] font-bold cursor-pointer hover:underline w-24 my-5'>
+                    <MoveLeft className="mr-2 h-5 w-5" /> Voltar
+                </div>
 
                 <div className='flex flex-col lg:flex-row justify-center gap-4'>
                     <div className="w-full lg:w-[65%]">
