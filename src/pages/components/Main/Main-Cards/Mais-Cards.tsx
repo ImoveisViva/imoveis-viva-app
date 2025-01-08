@@ -63,8 +63,8 @@ function PaginatedCards({ filter }: MainCardsProps) {
     }
 
     return (
-        <div className="px-4 sm:px-6 md:px-12 lg:px-44 py-6 sm:py-8 md:py-10 bg-[#f4f1de]">
-            <h1 className="text-2xl sm:text-3xl md:text-[30px] font-bold text-center mb-4 sm:mb-6 md:mb-7 text-[#7a9e7e]">Imóveis em Destaque</h1>
+        <div className="sm:px-6 md:px-12 lg:px-44 py-8 sm:py-10 md:py-12 bg-[#f5f4f0]">
+            <h1 className="text-2xl sm:text-3xl md:text-[30px] font-bold text-center mb-4 sm:mb-8 md:mb-12 text-[#7a9e7e]">Imóveis em Destaque</h1>
             <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4 sm:gap-6">
                 {currentCards.map((imovel) => (
                     <Link to={`/estate/${imovel.id}`} key={imovel.id} className="block">
