@@ -33,7 +33,7 @@ export const Cards: React.FC<PropertyCardProps> = ({ imovel }) => {
             }
           </p>
           <p className='flex items-center gap-1 text-[#858585]'>
-            <MapPin size={18} />{imovel.endereco.bairro} - {imovel.endereco.cidade}
+            <MapPin size={18} />{imovel.endereco.bairro}
           </p>
         </div>
 

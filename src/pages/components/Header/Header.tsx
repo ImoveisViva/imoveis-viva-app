@@ -1,6 +1,7 @@
 import { useState } from 'react';
 import { Menu, X } from 'lucide-react';
 import { Link } from 'react-router-dom';
+import EncontreOImovel from '../EncontreOImovel';
 
 interface PropType {
     isHome: boolean;
@@ -39,7 +40,7 @@ export function Header({ isHome }: PropType) {
                     )}
                 </header>
                 <section
-                    className="bg-[#7A9E7E] text-white py-10 sm:py-20 h-[60vh] text-center"
+                    className="bg-[#7A9E7E] text-white py-10 sm:py-20 h-[65vh] text-center flex flex-col items-center justify-center"
                     style={{
                         backgroundImage:
                             'url("https://images.unsplash.com/photo-1560518883-ce09059eeffa?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=1973&q=80")',
@@ -48,12 +49,13 @@ export function Header({ isHome }: PropType) {
                         backgroundBlendMode: 'overlay',
                     }}
                 >
-                    <h1 className='font-bold text-2xl sm:text-4xl md:text-[45px] mb-4 sm:mb-7 mt-10'>
-                        Encontre o Imóvel dos Seus Sonhos para Alugar
+                    <h1 className='font-bold text-2xl sm:text-4xl md:text-[40px] mb-4 sm:mb-5'>
+                        Encontre o Imóvel dos Sonhos para Alugar
                     </h1>
-                    <span className='text-lg sm:text-xl md:text-[30px]'>
-                        Milhares de opções em Unaí e região.
+                    <span className='text-lg sm:text-xl md:text-[25px]'>
+                        Milhares de opções em Unaí.
                     </span>
+                    <EncontreOImovel isTranparent={true}/>
                 </section>
             </section>
         );

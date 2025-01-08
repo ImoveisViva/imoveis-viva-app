@@ -10,7 +10,7 @@ export function Home() {
             <Header isHome={true} />
             <MainCardsDestaque />
             <PqEscolherAViva />
-            <EncontreOImovel />
+            <EncontreOImovel isTranparent={false}/>
             <Footer />
         </div>
     );
