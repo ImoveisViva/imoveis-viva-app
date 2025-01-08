@@ -13,63 +13,56 @@ export function Header({ isHome }: PropType) {
         setIsMenuOpen(!isMenuOpen);
     };
 
-    return (
-        <header className='w-full shadow-sm'>
-            <div className="flex items-center justify-between h-16 md:h-20">
-                <div className="flex-shrink-0">
-                    <Link to="/" className="flex items-center">
-                        <span className="text-xl md:text-2xl font-bold text-[#3b82f6]">Imóveis Viva</span>
-                    </Link>
-                </div>
-                <div className='hidden md:flex items-center justify-end gap-5'>
-                    <div className="space-x-4">
-                        <Link to="/alugar" className={`${isHome ? 'text-white' : 'text-gray-800'} hover:text-[#3b82f6] px-3 py-2 rounded-md text-sm font-medium`}>
-                            Alugar
-                        </Link>
-                        <Link to="/comprar" className={`${isHome ? 'text-white' : 'text-gray-800'} hover:text-[#3b82f6] px-3 py-2 rounded-md text-sm font-medium`}>
-                            Comprar
-                        </Link>
-                    </div>
-                    <button className="bg-[#3b82f6] hover:bg-blue-600 text-white font-semibold py-2 px-4 rounded-md text-sm">
-                        Anunciar imóvel
-                    </button>
-                </div>
-                <div className="md:hidden">
-                    <button
-                        onClick={toggleMenu}
-                        type="button"
-                        className={`inline-flex items-center justify-center p-2 rounded-md ${isHome ? 'text-white' : 'text-gray-800'} hover:text-[#3b82f6] focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-offset-gray-800 focus:ring-white`}
-                        aria-controls="mobile-menu"
-                        aria-expanded="false"
-                    >
-                        <span className="sr-only">Open main menu</span>
-                        {isMenuOpen ? (
-                            <X className="block h-6 w-6" aria-hidden="true" />
-                        ) : (
-                            <Menu className="block h-6 w-6" aria-hidden="true" />
-                        )}
-                    </button>
-                </div>
-            </div>
-
-            {isMenuOpen && (
-                <div className="md:hidden absolute top-16 left-0 right-0 bg-white z-50 shadow-md" id="mobile-menu">
-                    <div className="px-4 pt-2 pb-3 space-y-1">
-                        <Link to="/alugar" className="text-gray-800 hover:text-[#3b82f6] block px-3 py-2 rounded-md text-base font-medium">
-                            Alugar
-                        </Link>
-                        <Link to="/comprar" className="text-gray-800 hover:text-[#3b82f6] block px-3 py-2 rounded-md text-base font-medium">
-                            Comprar
-                        </Link>
-                        <Link to="/anunciar" className="text-gray-800 hover:text-[#3b82f6] block px-3 py-2 rounded-md text-base font-medium">
-                            Anunciar
-                        </Link>
-                        <button className="w-full text-left bg-[#3b82f6] hover:bg-blue-600 text-white font-bold py-2 px-4 rounded mt-2">
-                            Contato
+    if (isHome) {
+        return (
+            <section>
+                <header className='bg-[#7a9e7e] px-4 sm:px-6 md:px-12 lg:px-44'>
+                    <nav className='flex justify-between h-[11vh] items-center'>
+                        <div className='text-white font-bold text-xl sm:text-2xl md:text-[27px]'>
+                            Imóveis Viva
+                        </div>
+                        <div className='hidden md:flex text-white items-center px-5 gap-8 font-semibold'>
+                            <Link className='hover:text-[#e27d60]' to="/">Início</Link>
+                            <Link className='hover:text-[#e27d60]' to="/">Sobre</Link>
+                            <Link className='bg-[#e27d60] px-3 py-2 rounded-lg hover:bg-[#cc664a] transition-colors duration-300' to="/">Anunciar Imóvel</Link>
+                        </div>
+                        <button onClick={toggleMenu} className='md:hidden text-white'>
+                            {isMenuOpen ? <X size={24} /> : <Menu size={24} />}
                         </button>
-                    </div>
-                </div>
-            )}
-        </header>
-    );
+                    </nav>
+                    {isMenuOpen && (
+                        <div className='md:hidden bg-[#7a9e7e] py-4'>
+                            <Link className='block text-white py-2 px-4 hover:bg-[#6b8d6f]' to="/">Início</Link>
+                            <Link className='block text-white py-2 px-4 hover:bg-[#6b8d6f]' to="/">Sobre</Link>
+                            <Link className='block text-white py-2 px-4 bg-[#e27d60] hover:bg-[#cc664a]' to="/">Anunciar Imóvel</Link>
+                        </div>
+                    )}
+                </header>
+                <section
+                    className="bg-[#7A9E7E] text-white py-10 sm:py-20 h-[50vh] text-center"
+                    style={{
+                        backgroundImage:
+                            'url("https://images.unsplash.com/photo-1560518883-ce09059eeffa?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=1973&q=80")',
+                        backgroundSize: 'cover',
+                        backgroundPosition: 'center center',
+                        backgroundBlendMode: 'overlay',
+                    }}
+                >
+                    <h1 className='font-bold text-2xl sm:text-3xl md:text-[40px] mb-3 sm:mb-5'>
+                        Encontre o Imóvel dos Seus Sonhos para Alugar
+                    </h1>
+                    <span className='text-lg sm:text-xl md:text-[25px]'>
+                        Milhares de opções em Unaí
+                    </span>
+                </section>
+            </section>
+        );
+    } else {
+        return (
+            <section>
+                <div className="header">outro</div>
+            </section>
+        );
+    }
 }
+
