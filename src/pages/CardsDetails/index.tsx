@@ -59,12 +59,12 @@ export const CardDetails = () => {
     )
 
     return (
-        <>
+        <div className='bg-[#f5f4f0]'>
+            <Header isHome={false} />
             <div className='px-4 sm:px-6 md:px-8 lg:px-12 xl:px-16 2xl:px-44 max-w-screen-2xl mx-auto'>
-                <Header isHome={false} />
                 <div onClick={() => navigate('/')}
-                    className='flex items-center text-[#3b82f6] text-[15px] font-bold cursor-pointer hover:underline w-24 my-5'>
-                    <MoveLeft className="mr-2 h-5 w-5" /> Voltar
+                    className='flex items-center text-[#7a9e7e] text-[15px] font-bold cursor-pointer hover:underline w-24 my-10'>
+                    <MoveLeft className="mr-2 h-5 w-5" color='#7a9e7e'/> Voltar
                 </div>
 
                 <div className='flex flex-col lg:flex-row justify-center gap-4'>
@@ -95,8 +95,8 @@ export const CardDetails = () => {
                         )}
                     </div>
 
-                    <Card className='relative flex flex-col w-full lg:w-[35%] p-4 sm:p-6 gap-4 rounded-lg mt-4 lg:mt-0'>
-                        <span className={`absolute top-2 right-2 ${property.disponivel ? 'bg-green-500' : 'bg-red-500'} rounded-md px-3 py-1 text-xs font-semibold text-white`}>
+                    <Card className='relative flex flex-col w-full lg:w-[35%] p-4 sm:p-6 gap-4 rounded-sm mt-4 lg:mt-0'>
+                        <span className={`absolute top-2 right-2 ${property.disponivel ? 'bg-green-500' : 'bg-red-500'} rounded-sm px-3 py-1 text-xs font-semibold text-white`}>
                             {property.disponivel ? 'Disponível' : 'Indisponível'}
                         </span>
                         <h1 className='font-bold text-xl sm:text-2xl mb-2'>{property.tipoImovel} - {property.tipoNegocio}</h1>
@@ -153,7 +153,7 @@ export const CardDetails = () => {
                             <p className='flex items-center gap-2 text-sm sm:text-base'><Mail className="h-4 w-4" />{property.contato.email}</p>
                         </div>
 
-                        <Button className='mt-4 w-full bg-[#3b82f6] hover:bg-blue-600'>Entrar em contato</Button>
+                        <Button className='mt-4 w-full bg-[#e27d60] hover:bg-blue-600'>Entrar em contato</Button>
                     </Card>
                 </div>
 
@@ -162,7 +162,7 @@ export const CardDetails = () => {
                 </div>
             </div>
             <Footer />
-        </>
+        </div>
     )
 }
 

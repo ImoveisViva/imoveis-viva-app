@@ -20,7 +20,7 @@ export function Header({ isHome }: PropType) {
                 <header className='bg-[#7a9e7e] px-4 sm:px-6 md:px-12 lg:px-44'>
                     <nav className='flex justify-between h-[11vh] items-center'>
                         <div className='text-white font-bold text-xl sm:text-2xl md:text-[27px]'>
-                            Imóveis Viva
+                            <Link to={'/'}>Imóveis Viva</Link>
                         </div>
                         <div className='hidden md:flex text-white items-center px-5 gap-8 font-semibold'>
                             <Link className='hover:text-[#e27d60]' to="/">Início</Link>
@@ -55,7 +55,7 @@ export function Header({ isHome }: PropType) {
                     <span className='text-lg sm:text-xl md:text-[25px]'>
                         Milhares de opções em Unaí.
                     </span>
-                    <EncontreOImovel isTranparent={true}/>
+                    <EncontreOImovel isTranparent={true} />
                 </section>
             </section>
         );
@@ -65,7 +65,7 @@ export function Header({ isHome }: PropType) {
                 <header className='bg-[#7a9e7e] px-4 sm:px-6 md:px-12 lg:px-44'>
                     <nav className='flex justify-between h-[11vh] items-center'>
                         <div className='text-white font-bold text-xl sm:text-2xl md:text-[27px]'>
-                            Imóveis Viva
+                            <Link to={'/'}>Imóveis Viva</Link>
                         </div>
                         <div className='hidden md:flex text-white items-center px-5 gap-8 font-semibold'>
                             <Link className='hover:text-[#e27d60]' to="/">Início</Link>

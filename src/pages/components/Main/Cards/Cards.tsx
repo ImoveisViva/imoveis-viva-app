@@ -2,6 +2,7 @@ import { Card, CardHeader, CardTitle } from "@/components/ui/card"
 import { ImovelType } from '@/hooks/types';
 import { Bath, Bed, MapPin, Ruler } from 'lucide-react';
 import { Button } from '@/components/ui/button';
+import { Link } from 'react-router-dom';
 
 interface PropertyCardProps {
   imovel: ImovelType;
@@ -9,7 +10,7 @@ interface PropertyCardProps {
 
 export const Cards: React.FC<PropertyCardProps> = ({ imovel }) => {
   return (
-    <Card className='relative max-h-[55vh] min-h-[55vh]'>
+    <Card className='relative max-h-[55vh] min-h-[55vh] rounded-md shadow-sm'>
       <div className="relative w-full h-[200px]">
         <img
           src={
@@ -18,7 +19,7 @@ export const Cards: React.FC<PropertyCardProps> = ({ imovel }) => {
               : imovel.fotos[0]
           }
           alt={`${imovel.tipoImovel} em ${imovel.endereco.bairro}`}
-          className="rounded-t-lg max-h-[100%] max-w-[100%] min-h-[100%] min-w-[100%] bg-cover"
+          className="rounded-t-md max-h-[100%] max-w-[100%] min-h-[100%] min-w-[100%] bg-cover"
         />
       </div>
 
@@ -58,12 +59,14 @@ export const Cards: React.FC<PropertyCardProps> = ({ imovel }) => {
           ) : null}
         </div>
 
-        <Button
-          className="absolute inset-x-4 bottom-4 h-11 border border-[#7a9e7e] text-[#7a9e7e] bg-transparent hover:bg-[#7a9e7e] hover:text-white transition-colors"
-        >
-          Ver detalhes
-        </Button>
+        <Link to={`/estate/${imovel.id}`}>
+          <Button
+            className="absolute inset-x-4 bottom-4 h-11 w-[calc(100%-2rem)] border border-[#7a9e7e] text-[#7a9e7e] bg-transparent hover:bg-[#7a9e7e] hover:text-white transition-colors"
+          >
+            Ver detalhes
+          </Button>
+        </Link>
       </CardHeader>
-    </Card >
+    </Card>
   );
 };
