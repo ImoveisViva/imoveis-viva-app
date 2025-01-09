@@ -28,44 +28,61 @@ export default function EncontreOImovel({ isTranparent }: PropType) {
     }
   }
 
-  const content = (
-    <div className="container mx-auto">
-      <h2 className={`text-2xl sm:text-3xl font-bold text-center mb-10 sm:mb-14 ${!isTranparent ? 'text-[#7a9e7e]' : ''}`}>
-        Encontre o Imóvel Perfeito
-      </h2>
-      <div className="flex flex-col sm:flex-row gap-4 justify-center items-center">
-        <Select onValueChange={handleSelectChange} value={tipoImovel}>
-          <SelectTrigger className="w-full sm:w-[300px] md:w-[350px] lg:w-[370px] px-4 sm:px-5">
-            <SelectValue placeholder="Tipo de Imóvel" />
-          </SelectTrigger>
-          <SelectContent>
-            <SelectItem value="casa">Casa</SelectItem>
-            <SelectItem value="apartamento">Apartamento</SelectItem>
-            <SelectItem value="terreno">Terreno</SelectItem>
-            <SelectItem value="comercial">Comercial</SelectItem>
-          </SelectContent>
-        </Select>
-
-        <Button
-          className="w-full sm:w-[300px] md:w-[350px] lg:w-[370px] bg-[#e27d60] hover:bg-[#cc664a] text-white px-4 sm:px-8 py-2 sm:py-3"
-          onClick={handleSearch}
-        >
-          <Search className="mr-2 h-4 w-4" /> Buscar
-        </Button>
-      </div>
-    </div>
-  )
-
   if (isTranparent) {
     return (
-      <section className="py-8 sm:py-12 md:py-16 px-4 sm:px-8 md:px-12 lg:px-16 xl:px-44 bg-transparent">
-        {content}
-      </section>
+      <div className="px-5 w-full">
+        <section className="bg-[#f5f4f0] p-4 sm:p-6 w-full sm:w-[90vw] md:w-[70vw] lg:w-[50vw] mx-auto mt-10 text-[#7a9e7e] rounded-sm">
+          <div className="flex flex-col gap-4 justify-center items-center">
+            <Select onValueChange={handleSelectChange}>
+              <SelectTrigger className="w-full px-5">
+                <SelectValue placeholder="Tipo de Imóvel" />
+              </SelectTrigger>
+              <SelectContent>
+                <SelectItem value="casa">Casa</SelectItem>
+                <SelectItem value="apartamento">Apartamento</SelectItem>
+                <SelectItem value="terreno">Terreno</SelectItem>
+                <SelectItem value="comercial">Comercial</SelectItem>
+              </SelectContent>
+            </Select>
+
+            <Button
+              className="w-full bg-[#e27d60] hover:bg-[#cc664a] text-white"
+              onClick={handleSearch}
+            >
+              <Search className="mr-2 h-4 w-4" /> Buscar
+            </Button>
+          </div>
+        </section>
+      </div>
     )
   } else {
     return (
       <section className="py-8 sm:py-12 md:py-20 px-4 sm:px-8 md:px-12 lg:px-16 xl:px-44 bg-[#f5f4f0]">
-        {content}
+        <div className="container mx-auto">
+          <h2 className={`text-2xl sm:text-3xl font-bold text-center mb-10 sm:mb-14 ${!isTranparent ? 'text-[#7a9e7e]' : ''}`}>
+            Encontre o Imóvel Perfeito
+          </h2>
+          <div className="flex flex-col sm:flex-row gap-4 justify-center items-center">
+            <Select onValueChange={handleSelectChange} value={tipoImovel}>
+              <SelectTrigger className="w-full sm:w-[300px] md:w-[350px] lg:w-[370px] px-4 sm:px-5">
+                <SelectValue placeholder="Tipo de Imóvel" />
+              </SelectTrigger>
+              <SelectContent>
+                <SelectItem value="casa">Casa</SelectItem>
+                <SelectItem value="apartamento">Apartamento</SelectItem>
+                <SelectItem value="terreno">Terreno</SelectItem>
+                <SelectItem value="comercial">Comercial</SelectItem>
+              </SelectContent>
+            </Select>
+
+            <Button
+              className="w-full sm:w-[300px] md:w-[350px] lg:w-[370px] bg-[#e27d60] hover:bg-[#cc664a] text-white px-4 sm:px-8 py-2 sm:py-3"
+              onClick={handleSearch}
+            >
+              <Search className="mr-2 h-4 w-4" /> Buscar
+            </Button>
+          </div>
+        </div>
       </section>
     )
   }
