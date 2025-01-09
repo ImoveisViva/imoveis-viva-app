@@ -10,6 +10,7 @@ import DashboardPage from './pages/Admin/dashboard/page';
 import { Mapa } from './pages/Admin/mapa/page';
 import { CardDetails } from './pages/CardsDetails';
 import { SobrePage } from './pages/Sobre';
+import AnunciarPage from './pages/Anunciar';
 
 export function App() {
   return (
@@ -27,6 +28,7 @@ export function App() {
             <Route path="mapa" element={<Mapa />} />
           </Route>
           <Route path="/sobre" element={<SobrePage />} />
+          <Route path="/anunciar" element={<AnunciarPage />} />
         </Routes>
       </BrowserRouter>
     </UserProvider>
