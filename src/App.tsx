@@ -9,6 +9,7 @@ import ConsultarImoveisPage from './pages/Admin/consultaimoveis/page';
 import DashboardPage from './pages/Admin/dashboard/page';
 import { Mapa } from './pages/Admin/mapa/page';
 import { CardDetails } from './pages/CardsDetails';
+import { SobrePage } from './pages/Sobre';
 
 export function App() {
   return (
@@ -25,6 +26,7 @@ export function App() {
             <Route path="consultaimoveis" element={<ConsultarImoveisPage />} />
             <Route path="mapa" element={<Mapa />} />
           </Route>
+          <Route path="/sobre" element={<SobrePage />} />
         </Routes>
       </BrowserRouter>
     </UserProvider>
