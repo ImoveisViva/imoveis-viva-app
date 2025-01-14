@@ -1,4 +1,5 @@
 import { useState } from 'react';
+import imgLogo from '../../../../public/assets/img/logo.png';
 import { Menu, X } from 'lucide-react';
 import { Link } from 'react-router-dom';
 import EncontreOImovel from '../EncontreOImovel';
@@ -19,8 +20,11 @@ export function Header({ isHome }: PropType) {
             <section>
                 <header className='bg-[#7a9e7e] px-4 sm:px-6 md:px-12 lg:px-44'>
                     <nav className='flex justify-between h-[11vh] items-center'>
-                        <div className='text-white font-bold text-xl sm:text-2xl md:text-[27px]'>
-                            <Link to={'/'}>Imóveis Viva</Link>
+                        <div className='flex items-center text-white font-bold text-xl sm:text-2xl md:text-[27px]'>
+                            <Link to={'/'} className='flex items-center'>
+                                <img src={imgLogo || "/placeholder.svg"} alt="Imóveis Viva Logo" className='w-32 h-32' />
+                                <span>Imóveis Viva</span>
+                            </Link>
                         </div>
                         <div className='hidden md:flex text-white items-center px-5 gap-8 font-semibold'>
                             <Link className='hover:text-[#e27d60]' to="/">Início</Link>
@@ -64,8 +68,11 @@ export function Header({ isHome }: PropType) {
             <section>
                 <header className='bg-[#7a9e7e] px-4 sm:px-6 md:px-12 lg:px-44'>
                     <nav className='flex justify-between h-[11vh] items-center'>
-                        <div className='text-white font-bold text-xl sm:text-2xl md:text-[27px]'>
-                            <Link to={'/'}>Imóveis Viva</Link>
+                        <div className='flex items-center text-white font-bold text-xl sm:text-2xl md:text-[27px]'>
+                            <Link to={'/'} className='flex items-center'>
+                                <img src={imgLogo || "/placeholder.svg"} alt="Imóveis Viva Logo" className='w-32 h-32' />
+                                <span>Imóveis Viva</span>
+                            </Link>
                         </div>
                         <div className='hidden md:flex text-white items-center px-5 gap-8 font-semibold'>
                             <Link className='hover:text-[#e27d60]' to="/">Início</Link>

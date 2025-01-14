@@ -153,7 +153,7 @@ export const CardDetails = () => {
                             <p className='flex items-center gap-2 text-sm sm:text-base'><Mail className="h-4 w-4" />{property.contato.email}</p>
                         </div>
 
-                        <Button className='mt-4 w-full bg-[#e27d60] hover:bg-blue-600'>Entrar em contato</Button>
+                        <Button className='mt-4 w-full bg-[#e27d60] hover:bg-[#e27d60]/70'>Entrar em contato</Button>
                     </Card>
                 </div>
 
