@@ -1,4 +1,4 @@
-import { collection, doc, getDoc, getDocs } from "firebase/firestore";
+import { collection, doc, getDoc, getDocs, query, where } from "firebase/firestore";
 import { db } from "../firebaseConfig";
 import { ImovelType } from "@/hooks/types";
 
@@ -37,4 +37,28 @@ export async function GetCardDB({ id }: { id: string }) {
         console.error("Erro ao buscar imóvel:", error);
         return [];
     }
+}
+
+export async function GetCardDBPesquisa({ type }: { type: string }) {
+    try {
+        const q = query(collection(db, "imoveis"), where("tipoImovel", "==", type));
+        const querySnapshot = await getDocs(q);
+
+        const data: ImovelType[] = [];
+        querySnapshot.forEach((doc) => {
+            data.push({ ...doc.data(), id: doc.id } as ImovelType);
+        });
+
+        const randomData = getRandomItems(data);
+        return randomData;
+
+    } catch (error) {
+        console.error("Erro ao buscar imóvel:", error);
+        return [];
+    }
+}
+
+function getRandomItems(arr: any[]): any[] {
+    const shuffled = arr.sort(() => 0.5 - Math.random());
+    return shuffled;
 }

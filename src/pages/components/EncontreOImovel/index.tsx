@@ -38,10 +38,10 @@ export default function EncontreOImovel({ isTranparent }: PropType) {
                 <SelectValue placeholder="Tipo de Imóvel" />
               </SelectTrigger>
               <SelectContent>
-                <SelectItem value="casa">Casa</SelectItem>
-                <SelectItem value="apartamento">Apartamento</SelectItem>
-                <SelectItem value="terreno">Terreno</SelectItem>
-                <SelectItem value="comercial">Comercial</SelectItem>
+                <SelectItem value="Casa">Casa</SelectItem>
+                <SelectItem value="Apartamento">Apartamento</SelectItem>
+                <SelectItem value="Terreno">Terreno</SelectItem>
+                <SelectItem value="Comercial">Comercial</SelectItem>
               </SelectContent>
             </Select>
 

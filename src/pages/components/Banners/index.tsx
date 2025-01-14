@@ -1,6 +1,7 @@
 import { Card, CardContent } from "@/components/ui/card"
 import imgApart from '../../../../public/assets/img/apartamento.png'
 import imgCasa from '../../../../public/assets/img/casa.png'
+import imgContru from '../../../../public/assets/img/contrucao.png'
 import imgTerre from '../../../../public/assets/img/terreno.png'
 import { Link } from "react-router-dom";
 
@@ -18,12 +19,12 @@ const categories: PropertyCategory[] = [
         count: 247,
         image: imgApart,
         gridClass: "md:col-span-2 md:row-span-1",
-        url: '/pesquisa?tipo=apartamento'
+        url: '/pesquisa?tipo=Apartamento'
     },
     {
         title: "CONSTRUÇÕES",
         count: 9,
-        image: "/placeholder.svg?height=400&width=400",
+        image: imgContru,
         gridClass: "md:col-span-1 md:row-span-1",
         url: ''
     },
@@ -32,14 +33,14 @@ const categories: PropertyCategory[] = [
         count: 34,
         image: imgTerre,
         gridClass: "md:col-span-1 md:row-span-1",
-        url: '/pesquisa?tipo=terreno'
+        url: '/pesquisa?tipo=Terreno'
     },
     {
         title: "CASAS",
         count: 69,
         image: imgCasa,
         gridClass: "md:col-span-2 md:row-span-1",
-        url: '/pesquisa?tipo=casa'
+        url: '/pesquisa?tipo=Casa'
     }
 ]
 

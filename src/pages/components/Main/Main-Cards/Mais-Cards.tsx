@@ -6,6 +6,7 @@ import { Button } from "@/components/ui/button";
 import { Cards } from "../Cards/Cards";
 
 interface MainCardsProps {
+    data?: ImovelType[];
     filter?: (imovel: ImovelType) => boolean;
 }
 
@@ -90,7 +91,51 @@ export function MainCardsDestaque() {
     );
 }
 
-export function MainCards() {
-    return <PaginatedCards filter={(imovel) => !!imovel.disponivel} />;
+
+import { useInView } from 'react-intersection-observer'
+export function MainCards({ data, filter }: MainCardsProps) {
+    const [displayedCards, setDisplayedCards] = useState<ImovelType[]>([])
+    const cardsPerPage = 6
+
+    const { ref, inView } = useInView({
+        threshold: 0,
+    })
+
+    const filteredData = data ?? []
+    const filteredCards = filter ? filteredData.filter(filter) : filteredData
+
+    useEffect(() => {
+        setDisplayedCards(filteredCards.slice(0, cardsPerPage))
+    }, [filteredCards])
+
+    useEffect(() => {
+        if (inView) {
+            const nextCards = filteredCards.slice(
+                displayedCards.length,
+                displayedCards.length + cardsPerPage
+            )
+            if (nextCards.length > 0) {
+                setDisplayedCards(prev => [...prev, ...nextCards])
+            }
+        }
+    }, [inView, filteredCards, displayedCards])
+
+    return (
+        <div className="sm:px-6 md:px-12 lg:px-44 py-8 px-4 sm:py-10 md:py-12 bg-[#f5f4f0]">
+            <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4 sm:gap-6">
+                {displayedCards.map((imovel) => (
+                    <Cards imovel={imovel} key={imovel.id} />
+                ))}
+            </div>
+            {displayedCards.length < filteredCards.length && (
+                <div ref={ref} className="flex justify-center items-center p-4">
+                    <div className="animate-spin rounded-full h-8 w-8 border-b-2 border-gray-900"></div>
+                </div>
+            )}
+        </div>
+    )
 }
+
+
+
 

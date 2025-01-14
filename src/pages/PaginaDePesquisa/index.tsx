@@ -1,32 +1,96 @@
 import { useEffect, useState } from 'react'
 import { useSearchParams } from 'react-router-dom'
+import { motion } from 'framer-motion'
 import { Header } from '../components/Header/Header'
 import { Footer } from '../components/Footer/Footer'
+import { ImovelType } from '@/hooks/types'
+import { GetCardDBPesquisa } from '@/firebase/admin/getDashboard'
+import { MainCards } from '../components/Main/Main-Cards/Mais-Cards'
 
 export function PageDePesquisa() {
     const [searchParams] = useSearchParams()
     const [tipoImovel, setTipoImovel] = useState<string | null>(null)
+    const [loading, setLoading] = useState(false)
+    const [dataBD, setDataBD] = useState<ImovelType[]>([])
 
     useEffect(() => {
         const tipo = searchParams.get('tipo')
         setTipoImovel(tipo)
     }, [searchParams])
 
-    return (
-        <div className="container">
-            <Header isHome={false} />
-            <h1 className="text-3xl font-bold mb-6">Resultados da Pesquisa</h1>
-            {tipoImovel ? (
-                <p className="text-xl mb-4">
-                    Você está pesquisando por: <span className="font-semibold">{tipoImovel}</span>
-                </p>
-            ) : (
-                <p className="text-xl mb-4">Nenhum tipo de imóvel selecionado</p>
-            )}
-            {/* Aqui adicionar a lógica para buscar e exibir os imóveis do banco de dados */}
+    useEffect(() => {
+        async function handleGetDB() {
+            if (tipoImovel) {
+                try {
+                    setLoading(true)
+                    const data = await GetCardDBPesquisa({ type: tipoImovel })
+                    setDataBD(data)
+                } catch (error) {
+                    console.error(error)
+                } finally {
+                    setLoading(false)
+                }
+            }
+        }
+        handleGetDB()
+    }, [tipoImovel])
 
+    if (loading) {
+        return (
+            <div className="flex min-h-[400px] items-center justify-center">
+                <motion.div
+                    className="h-8 w-8 rounded-full border-4 border-primary border-t-transparent"
+                    animate={{ rotate: 360 }}
+                    transition={{ duration: 1, repeat: Infinity, ease: "linear" }}
+                />
+            </div>
+        )
+    }
+
+    return (
+        <motion.div
+            className="container"
+            initial={{ opacity: 0 }}
+            animate={{ opacity: 1 }}
+            transition={{ duration: 0.5 }}
+        >
+            <Header isHome={false} />
+            <motion.h1
+                className="text-3xl font-bold mb-6"
+                initial={{ y: -20, opacity: 0 }}
+                animate={{ y: 0, opacity: 1 }}
+                transition={{ delay: 0.2, duration: 0.5 }}
+            >
+                Resultados da Pesquisa
+            </motion.h1>
+            <motion.p
+                className="text-xl mb-4"
+                initial={{ y: -10, opacity: 0 }}
+                animate={{ y: 0, opacity: 1 }}
+                transition={{ delay: 0.3, duration: 0.5 }}
+            >
+                {tipoImovel ? (
+                    <>
+                        Você está pesquisando por: <span className="font-semibold">{tipoImovel}</span>
+                    </>
+                ) : (
+                    'Nenhum tipo de imóvel selecionado'
+                )}
+            </motion.p>
+
+            <motion.div
+                initial={{ y: 20, opacity: 0 }}
+                animate={{ y: 0, opacity: 1 }}
+                transition={{ delay: 0.4, duration: 0.5 }}
+            >
+                {dataBD.length > 0 ? (
+                    <MainCards data={dataBD} />
+                ) : (
+                    <p className="text-xl mb-4">Nenhum imóvel encontrado.</p>
+                )}
+            </motion.div>
             <Footer />
-        </div>
+        </motion.div>
     )
 }
 
