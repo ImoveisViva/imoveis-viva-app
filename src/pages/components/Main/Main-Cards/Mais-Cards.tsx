@@ -92,6 +92,7 @@ export function MainCardsDestaque() {
 }
 
 
+
 import { useInView } from 'react-intersection-observer'
 export function MainCards({ data, filter }: MainCardsProps) {
     const [displayedCards, setDisplayedCards] = useState<ImovelType[]>([])

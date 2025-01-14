@@ -93,4 +93,3 @@ export function PageDePesquisa() {
         </motion.div>
     )
 }
-
