@@ -63,7 +63,7 @@ function PaginatedCards({ filter }: MainCardsProps) {
 
     return (
         <div className="sm:px-6 md:px-12 lg:px-44 py-8 px-4 sm:py-10 md:py-12 bg-[#f5f4f0]">
-            <h1 className="text-2xl sm:text-3xl md:text-[30px] font-bold text-center mb-4 sm:mb-8 md:mb-12 text-[#7a9e7e]">Imóveis em Destaque</h1>
+            <h1 className="text-2xl sm:text-3xl md:text-[30px] font-bold text-center mb-4 sm:mb-8 md:mb-12 text-[#7a9e7e]">IMÓVEIS EM DESTAQUE</h1>
             <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4 sm:gap-6">
                 {currentCards.map((imovel) => (
                     <Cards imovel={imovel} key={imovel.id} />

@@ -2,7 +2,7 @@ import { Footer } from "../components/Footer/Footer";
 import { Header } from "../components/Header/Header";
 import { MainCardsDestaque } from "../components/Main/Main-Cards/Mais-Cards";
 import PqEscolherAViva from "../components/PQescolherViva";
-import EncontreOImovel from "../components/EncontreOImovel";
+import Banenrs from "../components/Banners";
 
 export function Home() {
     return (
@@ -10,7 +10,7 @@ export function Home() {
             <Header isHome={true} />
             <MainCardsDestaque />
             <PqEscolherAViva />
-            <EncontreOImovel isTranparent={false}/>
+            <Banenrs/>
             <Footer />
         </div>
     );
