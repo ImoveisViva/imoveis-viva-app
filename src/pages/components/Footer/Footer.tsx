@@ -39,7 +39,7 @@ export function Footer() {
                         <div className="col-span-1 lg:text-right">
                             <h3 className="text-xl font-semibold text-[#fff] mb-4">Siga-nos</h3>
                             <div className="flex justify-start lg:justify-end mb-4">
-                                <a href="https://www.instagram.com/imoveisviva/" target="_blank" rel="noopener noreferrer">
+                                <a href="https://www.instagram.com/imoveis.vivaunai/" target="_blank" rel="noopener noreferrer">
                                     <img className="w-8" src={svgInsta} alt="instagram" />
                                 </a>
                             </div>
