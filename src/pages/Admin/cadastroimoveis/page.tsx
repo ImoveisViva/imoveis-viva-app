@@ -36,6 +36,7 @@ export default function CadastroImoveisPage() {
         banheiro: 0,
         metros2: 0,
         preco: 0,
+        vagas: "0",
         descricao: '',
         endereco: {
             bairro: '',
@@ -158,6 +159,7 @@ export default function CadastroImoveisPage() {
                 fotos: photoUrls,
                 id_imovel: newId,
                 data: new Date().toISOString(),
+                vagas: propertyData.vagas,
             };
 
             await CadastroImoveis(finalPropertyData, newId);
@@ -173,6 +175,7 @@ export default function CadastroImoveisPage() {
                 banheiro: 0,
                 metros2: 0,
                 preco: 0,
+                vagas: '0',
                 descricao: '',
                 endereco: {
                     bairro: '',
@@ -317,6 +320,23 @@ export default function CadastroImoveisPage() {
                                 />
                             </div>
                             <div className="space-y-2">
+                                <Label htmlFor="vagas">
+                                    Vagas Garagem <span className="text-red-500">*</span>
+                                </Label>
+                                <Select name="vagas" value={propertyData.vagas} onValueChange={(value) => handleSelectChange('vagas', value)} required>
+                                    <SelectTrigger>
+                                        <SelectValue placeholder="Quantidade de vagas" />
+                                    </SelectTrigger>
+                                    <SelectContent>
+                                        <SelectItem value="0">0</SelectItem>
+                                        <SelectItem value="1">1</SelectItem>
+                                        <SelectItem value="2">2</SelectItem>
+                                        <SelectItem value="3">3</SelectItem>
+                                        <SelectItem value="4+">4 ou mais</SelectItem>
+                                    </SelectContent>
+                                </Select>
+                            </div>
+                            <div className="space-y-2">
                                 <Label htmlFor="tempoContratado">
                                     Tempo contratado <span className="text-red-500">*</span>
                                 </Label>
@@ -357,7 +377,7 @@ export default function CadastroImoveisPage() {
                             {propertyData.fotosPreviews.map((preview, index) => (
                                 <div key={index} className="relative aspect-square">
                                     <img
-                                        src={preview}
+                                        src={preview || "/placeholder.svg"}
                                         alt={`Preview ${index + 1}`}
                                         className="object-cover rounded-md"
                                     />
@@ -454,4 +474,3 @@ export default function CadastroImoveisPage() {
         </div>
     )
 }
-
