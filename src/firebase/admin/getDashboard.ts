@@ -58,24 +58,49 @@ export async function GetCardDBPesquisa({ type }: { type: string }) {
     }
 }
 
-// export async function GetDBPesquisa() {
-//     try {
-//         const q = query(collection(db, "imoveis"), where("tipoImovel", "==", ));
-//         const querySnapshot = await getDocs(q);
+interface FilterParams {
+    tipoNegocio?: string
+    tipoImovel?: string
+    quartos?: number
+    vagas?: string
+    preco?: number
+}
 
-//         const data: ImovelType[] = [];
-//         querySnapshot.forEach((doc) => {
-//             data.push({ ...doc.data(), id: doc.id } as ImovelType);
-//         });
+export async function GetDBPesquisa(filterParams: FilterParams) {
+    try {
+        let q = query(collection(db, "imoveis"));
 
-//         const randomData = getRandomItems(data);
-//         return randomData;
+        if (filterParams.tipoNegocio) {
+            q = query(q, where("tipoNegocio", "==", filterParams.tipoNegocio));
+        }
+        if (filterParams.tipoImovel) {
+            q = query(q, where("tipoImovel", "==", filterParams.tipoImovel));
+        }
+        if (filterParams.quartos) {
+            q = query(q, where("quartos", "==", filterParams.quartos));
+        }
+        // if (filterParams.vagas) {
+        //     q = query(q, where("vagas", "==", filterParams.vagas));
+        // }
+        if (filterParams.preco) {
+            q = query(q, where("preco", "<=", filterParams.preco)); 
+        }
 
-//     } catch (error) {
-//         console.error("Erro ao buscar imóvel:", error);
-//         return [];
-//     }
-// }
+        const querySnapshot = await getDocs(q);
+
+        const data: ImovelType[] = [];
+        querySnapshot.forEach((doc) => {
+            data.push({ ...doc.data(), id: doc.id } as ImovelType);
+        });
+
+        const randomData = getRandomItems(data);
+        return randomData;
+
+    } catch (error) {
+        console.error("Erro ao buscar imóvel:", error);
+        return [];
+    }
+}
 
 function getRandomItems(arr: any[]): any[] {
     const shuffled = arr.sort(() => 0.5 - Math.random());
