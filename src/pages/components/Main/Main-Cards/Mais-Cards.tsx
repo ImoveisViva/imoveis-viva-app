@@ -92,8 +92,8 @@ export function MainCardsDestaque() {
 }
 
 
+import { useInView } from 'react-intersection-observer';
 
-import { useInView } from 'react-intersection-observer'
 export function MainCards({ data, filter }: MainCardsProps) {
     const [displayedCards, setDisplayedCards] = useState<ImovelType[]>([])
     const cardsPerPage = 6
@@ -139,7 +139,3 @@ export function MainCards({ data, filter }: MainCardsProps) {
         </div>
     )
 }
-
-
-
-

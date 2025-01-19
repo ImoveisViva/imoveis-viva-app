@@ -19,29 +19,28 @@ export default function Filtro() {
     const [loading, setLoading] = React.useState(false);
 
     const handleSubmit = async (e: React.FormEvent) => {
-        e.preventDefault()
+        e.preventDefault();
         setLoading(true);
 
-        if (tipoImovel == "outros") setTipoImovel('')
+        if (tipoImovel === "outros") setTipoImovel('');
 
         const dados = {
-            tipoNegocio: tipoNegocio,
-            tipoImovel: tipoImovel,
+            tipoNegocio,
+            tipoImovel,
             quartos: Number(quartos),
             vagas: vagas,
             preco: preco[0],
-        }
-        console.log(dados)
+        };
 
         try {
-            const data = await GetDBPesquisa(dados)
-            console.log("data", data)
+            const data = await GetDBPesquisa(dados);
+            console.log("data", data);
         } catch {
-            console.log("Erro ao enviar formulário")
+            console.log("Erro ao enviar formulário");
         } finally {
             setLoading(false);
         }
-    }
+    };
 
     return (
         <form onSubmit={handleSubmit} className="sm:px-0 px-5 w-full max-w-6xl mx-auto py-20 border-b-2 border-[#cccccc]">

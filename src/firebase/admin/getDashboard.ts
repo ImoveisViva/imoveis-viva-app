@@ -79,9 +79,9 @@ export async function GetDBPesquisa(filterParams: FilterParams) {
         if (filterParams.quartos) {
             q = query(q, where("quartos", "==", filterParams.quartos));
         }
-        // if (filterParams.vagas) {
-        //     q = query(q, where("vagas", "==", filterParams.vagas));
-        // }
+        if (filterParams.vagas) {
+            q = query(q, where("vagas", "==", filterParams.vagas));
+        }
         if (filterParams.preco) {
             q = query(q, where("preco", "<=", filterParams.preco)); 
         }

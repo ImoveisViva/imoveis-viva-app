@@ -12,7 +12,7 @@ export function PageDePesquisa() {
     const [searchParams] = useSearchParams()
     const [tipoImovel, setTipoImovel] = useState<string | null>(null)
     const [loading, setLoading] = useState(false)
-    const [dataBD, setDataBD] = useState<ImovelType[]>([])
+    const [dataBD, setDataBD] = useState<ImovelType[]>([]);
 
     useEffect(() => {
         const tipo = searchParams.get('tipo')
