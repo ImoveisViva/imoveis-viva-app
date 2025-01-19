@@ -11,6 +11,7 @@ import { useMediaQuery } from '@/hooks/use-media-query'
 import { ImageCarousel } from '../components/Carousel/Carousel'
 import { ModalImageGallery } from '../components/Carousel/ModalGalerry'
 import { Header } from '../components/Header/Header'
+import Banenrs from '../components/Banners'
 
 export function formatCurrency(value: number): string {
     return new Intl.NumberFormat('pt-BR', {
@@ -64,7 +65,7 @@ export const CardDetails = () => {
             <div className='px-4 sm:px-6 md:px-8 lg:px-12 xl:px-16 2xl:px-44 max-w-screen-2xl mx-auto'>
                 <div onClick={() => navigate('/')}
                     className='flex items-center text-[#7a9e7e] text-[15px] font-bold cursor-pointer hover:underline w-24 my-10'>
-                    <MoveLeft className="mr-2 h-5 w-5" color='#7a9e7e'/> Voltar
+                    <MoveLeft className="mr-2 h-5 w-5" color='#7a9e7e' /> Voltar
                 </div>
 
                 <div className='flex flex-col lg:flex-row justify-center gap-4'>
@@ -156,11 +157,9 @@ export const CardDetails = () => {
                         <Button className='mt-4 w-full bg-[#e27d60] hover:bg-[#e27d60]/70'>Entrar em contato</Button>
                     </Card>
                 </div>
-
-                <div className="my-4">
-                    <Maps latitude={property.endereco.latitude} longitude={property.endereco.longitude} theme={'light'} />
-                </div>
+                <Maps latitude={property.endereco.latitude} longitude={property.endereco.longitude} theme={'light'} />
             </div>
+            <Banenrs />
             <Footer />
         </div>
     )

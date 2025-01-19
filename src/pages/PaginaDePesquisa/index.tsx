@@ -6,6 +6,7 @@ import { Footer } from '../components/Footer/Footer'
 import { ImovelType } from '@/hooks/types'
 import { GetCardDBPesquisa } from '@/firebase/admin/getDashboard'
 import { MainCards } from '../components/Main/Main-Cards/Mais-Cards'
+import Filtro from '../components/FiltroDePesquisa'
 
 export function PageDePesquisa() {
     const [searchParams] = useSearchParams()
@@ -55,28 +56,14 @@ export function PageDePesquisa() {
             transition={{ duration: 0.5 }}
         >
             <Header isHome={false} />
-            <motion.h1
-                className="text-3xl font-bold mb-6"
+            <motion.div
+                className="bg-[#f5f4f0]"
                 initial={{ y: -20, opacity: 0 }}
                 animate={{ y: 0, opacity: 1 }}
                 transition={{ delay: 0.2, duration: 0.5 }}
             >
-                Resultados da Pesquisa
-            </motion.h1>
-            <motion.p
-                className="text-xl mb-4"
-                initial={{ y: -10, opacity: 0 }}
-                animate={{ y: 0, opacity: 1 }}
-                transition={{ delay: 0.3, duration: 0.5 }}
-            >
-                {tipoImovel ? (
-                    <>
-                        Você está pesquisando por: <span className="font-semibold">{tipoImovel}</span>
-                    </>
-                ) : (
-                    'Nenhum tipo de imóvel selecionado'
-                )}
-            </motion.p>
+                <Filtro />
+            </motion.div>
 
             <motion.div
                 initial={{ y: 20, opacity: 0 }}

@@ -1,5 +1,4 @@
 import { useState } from 'react';
-import imgLogo from '../../../../public/assets/img/logo.png';
 import { Menu, X } from 'lucide-react';
 import { Link } from 'react-router-dom';
 import EncontreOImovel from '../EncontreOImovel';
@@ -22,7 +21,6 @@ export function Header({ isHome }: PropType) {
                     <nav className='flex justify-between h-[11vh] items-center'>
                         <div className='flex items-center text-white font-bold text-xl sm:text-2xl md:text-[27px]'>
                             <Link to={'/'} className='flex items-center'>
-                                <img src={imgLogo || "/placeholder.svg"} alt="Imóveis Viva Logo" className='w-32 h-32' />
                                 <span>Imóveis Viva</span>
                             </Link>
                         </div>
@@ -54,7 +52,8 @@ export function Header({ isHome }: PropType) {
                     }}
                 >
                     <h1 className='font-bold text-2xl sm:text-4xl md:text-[40px] mb-4 sm:mb-5'>
-                        Encontre o Imóvel dos Sonhos para Alugar
+                        {/* Encontre o Imóvel dos Sonhos para Alugar */}
+                        Seu Sonho está mais Próximo agora!
                     </h1>
                     <span className='text-lg sm:text-xl md:text-[25px]'>
                         Milhares de opções em Unaí.
@@ -70,7 +69,6 @@ export function Header({ isHome }: PropType) {
                     <nav className='flex justify-between h-[11vh] items-center'>
                         <div className='flex items-center text-white font-bold text-xl sm:text-2xl md:text-[27px]'>
                             <Link to={'/'} className='flex items-center'>
-                                <img src={imgLogo || "/placeholder.svg"} alt="Imóveis Viva Logo" className='w-32 h-32' />
                                 <span>Imóveis Viva</span>
                             </Link>
                         </div>

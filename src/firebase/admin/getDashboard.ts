@@ -58,6 +58,25 @@ export async function GetCardDBPesquisa({ type }: { type: string }) {
     }
 }
 
+// export async function GetDBPesquisa() {
+//     try {
+//         const q = query(collection(db, "imoveis"), where("tipoImovel", "==", ));
+//         const querySnapshot = await getDocs(q);
+
+//         const data: ImovelType[] = [];
+//         querySnapshot.forEach((doc) => {
+//             data.push({ ...doc.data(), id: doc.id } as ImovelType);
+//         });
+
+//         const randomData = getRandomItems(data);
+//         return randomData;
+
+//     } catch (error) {
+//         console.error("Erro ao buscar imóvel:", error);
+//         return [];
+//     }
+// }
+
 function getRandomItems(arr: any[]): any[] {
     const shuffled = arr.sort(() => 0.5 - Math.random());
     return shuffled;

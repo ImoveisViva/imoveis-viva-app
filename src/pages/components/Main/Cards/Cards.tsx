@@ -1,6 +1,6 @@
 import { Card, CardHeader, CardTitle } from "@/components/ui/card"
 import { ImovelType } from '@/hooks/types';
-import { Bath, Bed, MapPin, Ruler } from 'lucide-react';
+import { Bath, Bed, MapPin, Ruler, CarFront } from 'lucide-react';
 import { Button } from '@/components/ui/button';
 import { Link } from 'react-router-dom';
 
@@ -24,7 +24,10 @@ export const Cards: React.FC<PropertyCardProps> = ({ imovel }) => {
       </div>
 
       <CardHeader className='gap-2'>
-        <CardTitle className='text-[20px] text-[#7a9e7e]'>{imovel.tipoImovel}</CardTitle>
+        <div className="flex justify-between">
+          <CardTitle className='text-[20px] text-[#7a9e7e]'>{imovel.tipoImovel}</CardTitle>
+          <CardTitle className='text-[20px] text-[#7a9e7e]'>{imovel.id}</CardTitle>
+        </div>
 
         <div className='flex gap-2 items-center justify-between'>
           <p className="font-bold text-lg text-[#e27d60]">
@@ -40,21 +43,27 @@ export const Cards: React.FC<PropertyCardProps> = ({ imovel }) => {
 
         <div className="flex justify-between text-[#858585]">
           {imovel.quartos > 0 ? (
-            <span className="flex items-center gap-1 sm:gap-2 text-sm sm:text-base">
+            <span className="flex items-center gap-1 sm:gap-1 text-sm sm:text-base">
               <Bed className="h-4 w-4 sm:h-5 sm:w-5" />
-              {imovel.quartos} Quartos
+              {imovel.quartos} Qt
             </span>
           ) : null}
           {imovel.banheiro > 0 ? (
-            <span className="flex items-center gap-1 sm:gap-2 text-sm sm:text-base">
+            <span className="flex items-center gap-1 sm:gap-1 text-sm sm:text-base">
               <Bath className="h-4 w-4 sm:h-5 sm:w-5" />
-              {imovel.banheiro} Banheiros
+              {imovel.banheiro} Banh
             </span>
           ) : null}
           {imovel.metros2 > 0 ? (
-            <span className="flex items-center gap-1 sm:gap-2 text-sm sm:text-base">
+            <span className="flex items-center gap-1 sm:gap-1 text-sm sm:text-base">
               <Ruler className="h-4 w-4 sm:h-5 sm:w-5" />
               {imovel.metros2}m²
+            </span>
+          ) : null}
+          {imovel.metros2 > 0 ? (
+            <span className="flex items-center gap-1 sm:gap-1 text-sm sm:text-base">
+              <CarFront className="h-4 w-4 sm:h-5 sm:w-5" />
+              {imovel.metros2} Gar
             </span>
           ) : null}
         </div>

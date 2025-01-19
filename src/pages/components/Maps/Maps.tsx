@@ -31,7 +31,7 @@ export function Maps({ latitude, longitude, theme = 'light' }: MapsProps) {
         (theme !== 'light' ? ' &copy; <a href="https://carto.com/attributions">CARTO</a>' : '')
 
     return (
-        <div className='pt-10 pb-16'>
+        <div className='pt-10'>
             <h1 className='font-bold text-[28px] mb-2'>Localização</h1>
             <div className="h-[40vh] w-full border">
                 <MapContainer center={[Number(latitude), Number(longitude)]} zoom={16} style={{ height: '100%', width: '100%' }}>
