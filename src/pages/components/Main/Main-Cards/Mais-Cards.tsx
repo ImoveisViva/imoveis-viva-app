@@ -64,7 +64,10 @@ function PaginatedCards({ filter }: MainCardsProps) {
 
     return (
         <div className="sm:px-6 md:px-12 lg:px-44 py-8 px-4 sm:py-10 md:py-12 bg-[#f5f4f0]">
-            <h1 className="text-2xl sm:text-3xl md:text-[30px] font-bold text-center mb-4 sm:mb-8 md:mb-12 text-[#7a9e7e]">IMÓVEIS EM DESTAQUE</h1>
+            <div className="items-center flex mb-4 sm:mb-8 md:mb-12 gap-3">
+                <div className='w-1 h-8 bg-[#e27d60] mt-1' aria-hidden={true} />
+                <h1 className="text-2xl sm:text-3xl md:text-[30px] font-bold text-center text-[#7a9e7e]">IMÓVEIS EM DESTAQUE</h1>
+            </div>
             <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4 sm:gap-6">
                 {currentCards.map((imovel) => (
                     <Cards imovel={imovel} key={imovel.id} />
@@ -124,7 +127,7 @@ export function MainCards({ data, filter }: MainCardsProps) {
     return (
         <div className="sm:px-6 md:px-12 lg:px-44 py-8 px-4 sm:py-10 md:py-12 bg-[#f5f4f0]">
             <div className="justify-start flex mb-5 gap-3">
-            <div className='w-1 h-8 bg-[#e27d60] mt-1' aria-hidden={true} />
+                <div className='w-1 h-8 bg-[#e27d60] mt-1' aria-hidden={true} />
                 <h1 className="text-2xl sm:text-3xl md:text-[30px] font-bold text-center mb-4 sm:mb-8 md:mb-5 text-[#7a9e7e]">IMÓVEIS</h1>
             </div>
             <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4 sm:gap-6">

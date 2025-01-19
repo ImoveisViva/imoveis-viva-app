@@ -100,7 +100,10 @@ export const CardDetails = () => {
                         <span className={`absolute top-2 right-2 ${property.disponivel ? 'bg-green-500' : 'bg-red-500'} rounded-sm px-3 py-1 text-xs font-semibold text-white`}>
                             {property.disponivel ? 'Disponível' : 'Indisponível'}
                         </span>
-                        <h1 className='font-bold text-xl sm:text-2xl mb-2'>{property.tipoImovel} - {property.tipoNegocio}</h1>
+                        <div className='flex justify-between mt-3 items-center'>
+                            <h1 className='font-bold text-xl sm:text-2xl mb-2'>{property.tipoImovel} - {property.tipoNegocio}</h1>
+                            <h1 className='font-bold mb-2 text-[#7a9e7e]'>{property.id}</h1>
+                        </div>
                         <p className='text-lg sm:text-xl font-semibold text-primary'>{formatCurrency(property.preco)}</p>
                         <p className='text-sm sm:text-base text-gray-600'>{property.descricao}</p>
 

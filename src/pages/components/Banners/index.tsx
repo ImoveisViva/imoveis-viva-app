@@ -48,7 +48,10 @@ export default function Banenrs() {
     return (
         <section className="bg-[#f5f4f0] py-12 sm:py-16 md:py-20">
             <div className="container mx-auto px-4 sm:px-6 md:px-44">
-                <h1 className="text-2xl sm:text-3xl md:text-[30px] font-bold text-center mb-4 sm:mb-8 md:mb-12 text-[#7a9e7e]">ENCONTRE SEU IMÓVEL</h1>
+                <div className="items-center flex mb-4 sm:mb-8 md:mb-12 gap-3">
+                    <div className='w-1 h-8 bg-[#e27d60] mt-1' aria-hidden={true} />
+                    <h1 className="text-2xl sm:text-3xl md:text-[30px] font-bold text-center text-[#7a9e7e]">ENCONTRE SEU IMÓVEL</h1>
+                </div>
                 <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
                     {categories.map((category) => (
                         <Card
