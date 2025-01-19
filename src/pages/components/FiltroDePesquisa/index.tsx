@@ -9,8 +9,13 @@ import {
 } from "@/components/ui/select"
 import { Slider } from "@/components/ui/slider"
 import { GetDBPesquisa } from '@/firebase/admin/getDashboard'
+import { ImovelType } from '@/hooks/types'
 
-export default function Filtro() {
+interface FiltroProps {
+    onFilterResults: (results: ImovelType[]) => void;
+}
+
+export default function Filtro({ onFilterResults }: FiltroProps) {
     const [tipoNegocio, setTipoNegocio] = React.useState("")
     const [tipoImovel, setTipoImovel] = React.useState("")
     const [quartos, setQuartos] = React.useState("")
@@ -34,7 +39,7 @@ export default function Filtro() {
 
         try {
             const data = await GetDBPesquisa(dados);
-            console.log("data", data);
+            onFilterResults(data);
         } catch {
             console.log("Erro ao enviar formulário");
         } finally {
@@ -45,8 +50,9 @@ export default function Filtro() {
     return (
         <form onSubmit={handleSubmit} className="sm:px-0 px-5 w-full max-w-6xl mx-auto py-20 border-b-2 border-[#cccccc]">
             <div className="space-y-6">
-                <div className="flex items-center justify-between">
-                    <h1 className="text-2xl sm:text-3xl md:text-[30px] font-bold text-center mb-4 sm:mb-8 md:mb-5 text-[#7a9e7e]">QUAL IMÓVEL ESTÁ PROCURANDO?</h1>
+                <div className="flex items-center gap-3">
+                    <div className='w-1 h-8 bg-[#e27d60] mt-1' aria-hidden={true} />
+                    <h1 className="text-2xl sm:text-3xl md:text-[30px] font-bold text-center text-[#7a9e7e]">QUAL IMÓVEL ESTÁ PROCURANDO?</h1>
                 </div>
 
                 <div className="grid grid-cols-1 md:grid-cols-3 gap-4 ">

@@ -12,7 +12,7 @@ export function PageDePesquisa() {
     const [searchParams] = useSearchParams()
     const [tipoImovel, setTipoImovel] = useState<string | null>(null)
     const [loading, setLoading] = useState(false)
-    const [dataBD, setDataBD] = useState<ImovelType[]>([]);
+    const [filteredData, setFilteredData] = useState<ImovelType[]>([]);
 
     useEffect(() => {
         const tipo = searchParams.get('tipo')
@@ -25,7 +25,7 @@ export function PageDePesquisa() {
                 try {
                     setLoading(true)
                     const data = await GetCardDBPesquisa({ type: tipoImovel })
-                    setDataBD(data)
+                    setFilteredData(data)
                 } catch (error) {
                     console.error(error)
                 } finally {
@@ -35,6 +35,10 @@ export function PageDePesquisa() {
         }
         handleGetDB()
     }, [tipoImovel])
+
+    const handleFilterResults = (results: ImovelType[]) => {
+        setFilteredData(results);
+    }
 
     if (loading) {
         return (
@@ -62,7 +66,7 @@ export function PageDePesquisa() {
                 animate={{ y: 0, opacity: 1 }}
                 transition={{ delay: 0.2, duration: 0.5 }}
             >
-                <Filtro />
+                <Filtro onFilterResults={handleFilterResults} />
             </motion.div>
 
             <motion.div
@@ -70,13 +74,17 @@ export function PageDePesquisa() {
                 animate={{ y: 0, opacity: 1 }}
                 transition={{ delay: 0.4, duration: 0.5 }}
             >
-                {dataBD.length > 0 ? (
-                    <MainCards data={dataBD} />
+                {filteredData.length > 0 ? (
+                    <MainCards data={filteredData} />
                 ) : (
-                    <p className="text-xl mb-4">Nenhum imóvel encontrado.</p>
+                    <div className="flex items-center px-44 py-16 gap-3 bg-[#f5f4f0]">
+                        <div className='w-1 h-8 bg-[#e27d60] mt-1' aria-hidden={true} />
+                        <h1 className="text-2xl sm:text-3xl md:text-[30px] font-bold text-center text-[#7a9e7e]">NENHUM IMÓVEL ENCONTRADO.</h1>
+                    </div>
                 )}
             </motion.div>
             <Footer />
         </motion.div>
     )
 }
+

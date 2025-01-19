@@ -27,7 +27,7 @@ export function Header({ isHome }: PropType) {
                         <div className='hidden md:flex text-white items-center px-5 gap-8 font-semibold'>
                             <Link className='hover:text-[#e27d60]' to="/">Início</Link>
                             <Link className='hover:text-[#e27d60]' to="/sobre">Sobre</Link>
-                            <Link className='bg-[#e27d60] px-3 py-2 rounded-md hover:bg-[#cc664a] transition-colors duration-300' to="/anunciar">Anunciar Imóvel</Link>
+                            <Link className='bg-[#e27d60] px-3 py-2 rounded-md hover:bg-[#cc664a] transition-colors duration-300' to="/anunciar">Anuncie seu Imóvel</Link>
                         </div>
                         <button onClick={toggleMenu} className='md:hidden text-white'>
                             {isMenuOpen ? <X size={24} /> : <Menu size={24} />}
@@ -37,7 +37,7 @@ export function Header({ isHome }: PropType) {
                         <div className='md:hidden bg-[#7a9e7e] py-4'>
                             <Link className='block text-white py-2 px-4 hover:bg-[#6b8d6f]' to="/">Início</Link>
                             <Link className='block text-white py-2 px-4 hover:bg-[#6b8d6f]' to="/sobre">Sobre</Link>
-                            <Link className='block text-white py-2 px-4 bg-[#e27d60] hover:bg-[#cc664a]' to="/anunciar">Anunciar Imóvel</Link>
+                            <Link className='block text-white py-2 px-4 bg-[#e27d60] hover:bg-[#cc664a]' to="/anunciar">Anuncie seu Imóvel</Link>
                         </div>
                     )}
                 </header>
@@ -75,7 +75,7 @@ export function Header({ isHome }: PropType) {
                         <div className='hidden md:flex text-white items-center px-5 gap-8 font-semibold'>
                             <Link className='hover:text-[#e27d60]' to="/">Início</Link>
                             <Link className='hover:text-[#e27d60]' to="/sobre">Sobre</Link>
-                            <Link className='bg-[#e27d60] px-3 py-2 rounded-lg hover:bg-[#cc664a] transition-colors duration-300' to="/anunciar">Anunciar Imóvel</Link>
+                            <Link className='bg-[#e27d60] px-3 py-2 rounded-lg hover:bg-[#cc664a] transition-colors duration-300' to="/anunciar">Anuncie seu Imóvel</Link>
                         </div>
                         <button onClick={toggleMenu} className='md:hidden text-white'>
                             {isMenuOpen ? <X size={24} /> : <Menu size={24} />}
@@ -85,7 +85,7 @@ export function Header({ isHome }: PropType) {
                         <div className='md:hidden bg-[#7a9e7e] py-4'>
                             <Link className='block text-white py-2 px-4 hover:bg-[#6b8d6f]' to="/">Início</Link>
                             <Link className='block text-white py-2 px-4 hover:bg-[#6b8d6f]' to="/sobre">Sobre</Link>
-                            <Link className='block text-white py-2 px-4 bg-[#e27d60] hover:bg-[#cc664a]' to="/anunciar">Anunciar Imóvel</Link>
+                            <Link className='block text-white py-2 px-4 bg-[#e27d60] hover:bg-[#cc664a]' to="/anunciar">Anuncie seu Imóvel</Link>
                         </div>
                     )}
                 </header>
