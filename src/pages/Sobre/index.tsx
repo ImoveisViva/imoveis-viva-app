@@ -12,10 +12,10 @@ export function SobrePage() {
                     <div>
                         <h2 className="text-xl sm:text-2xl font-semibold text-gray-700 mb-3 sm:mb-4">Nossa História</h2>
                         <p className="text-gray-600 mb-4">
-                            A Imóveis Viva nasceu da paixão por conectar pessoas aos seus lares dos sonhos, com líderes no mercado imobiliário, oferecendo um serviço personalizado e de alta qualidade para nossos clientes.
+                            A Imóveis Viva nasceu da paixão por conectar pessoas às suas casas dos sonhos, com líderes no mercado imobiliário, oferecendo um serviço personalizado e de alta qualidade para nossos clientes.
                         </p>
                         <p className="text-gray-600 mb-4">
-                            Com uma equipe de profissionais dedicados e experientes, nos orgulhamos de ter ajudado milhares de famílias a encontrar o lugar perfeito para chamar de lar.
+                            Com uma equipe de profissionais dedicados e experientes, nos orgulhamos de ajduar inúmeras famílias a encontrar o lugar perfeito para chamar de lar.
                         </p>
                     </div>
                     <div className="flex justify-center md:justify-end">
@@ -59,10 +59,6 @@ export function SobrePage() {
                         <li className="flex items-center">
                             <svg className="w-5 h-5 sm:w-6 sm:h-6 text-orange-500 mr-2 flex-shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M5 13l4 4L19 7"></path></svg>
                             <span>Processo transparente e seguro</span>
-                        </li>
-                        <li className="flex items-center">
-                            <svg className="w-5 h-5 sm:w-6 sm:h-6 text-orange-500 mr-2 flex-shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M5 13l4 4L19 7"></path></svg>
-                            <span>Suporte pós-venda</span>
                         </li>
                     </ul>
                 </div>

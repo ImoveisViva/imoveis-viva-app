@@ -12,6 +12,7 @@ import { ImageCarousel } from '../components/Carousel/Carousel'
 import { ModalImageGallery } from '../components/Carousel/ModalGalerry'
 import { Header } from '../components/Header/Header'
 import Banenrs from '../components/Banners'
+import WhatsappPopup from '../components/Whatsapp'
 
 export function formatCurrency(value: number): string {
     return new Intl.NumberFormat('pt-BR', {
@@ -164,6 +165,7 @@ export const CardDetails = () => {
             </div>
             <Banenrs />
             <Footer />
+            <WhatsappPopup/>
         </div>
     )
 }
