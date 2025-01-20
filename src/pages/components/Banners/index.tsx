@@ -4,6 +4,9 @@ import imgCasa from '../../../../public/assets/img/casa.png'
 import imgContru from '../../../../public/assets/img/contrucao.png'
 import imgTerre from '../../../../public/assets/img/terreno.png'
 import { Link } from "react-router-dom";
+import { ImovelType } from "@/hooks/types"
+import { useEffect, useState } from "react"
+import { GetImoveisDB } from "@/firebase/admin/getDashboard"
 
 interface PropertyCategory {
     title: string;
@@ -13,38 +16,57 @@ interface PropertyCategory {
     url: string
 }
 
-const categories: PropertyCategory[] = [
-    {
-        title: "APARTAMENTOS",
-        count: 247,
-        image: imgApart,
-        gridClass: "md:col-span-2 md:row-span-1",
-        url: '/pesquisa?tipo=Apartamento'
-    },
-    {
-        title: "CONSTRUÇÕES",
-        count: 9,
-        image: imgContru,
-        gridClass: "md:col-span-1 md:row-span-1",
-        url: ''
-    },
-    {
-        title: "TERRENOS",
-        count: 34,
-        image: imgTerre,
-        gridClass: "md:col-span-1 md:row-span-1",
-        url: '/pesquisa?tipo=Terreno'
-    },
-    {
-        title: "CASAS",
-        count: 69,
-        image: imgCasa,
-        gridClass: "md:col-span-2 md:row-span-1",
-        url: '/pesquisa?tipo=Casa'
-    }
-]
-
 export default function Banenrs() {
+    const [dataBD, setDataBD] = useState<ImovelType[]>([])
+
+    useEffect(() => {
+        async function fetchData() {
+            try {
+                const dados = await GetImoveisDB()
+                setDataBD(dados);
+            } catch {
+                console.log('Erro ao fazer busca no banco de dados')
+            }
+        }
+        fetchData()
+    }, [])
+
+    const apartamento = dataBD.filter((imovel) => imovel.tipoImovel === "Apartamento").length
+    const construcao = dataBD.filter((imovel) => imovel.tipoImovel === "Construção").length
+    const terreno = dataBD.filter((imovel) => imovel.tipoImovel === "terrenos").length
+    const casa = dataBD.filter(imovel => imovel.tipoImovel === "Casa").length
+
+    const categories: PropertyCategory[] = [
+        {
+            title: "APARTAMENTOS",
+            count: apartamento,
+            image: imgApart,
+            gridClass: "md:col-span-2 md:row-span-1",
+            url: '/pesquisa?tipo=Apartamento'
+        },
+        {
+            title: "CONSTRUÇÕES",
+            count: construcao,
+            image: imgContru,
+            gridClass: "md:col-span-1 md:row-span-1",
+            url: ''
+        },
+        {
+            title: "TERRENOS",
+            count: terreno,
+            image: imgTerre,
+            gridClass: "md:col-span-1 md:row-span-1",
+            url: '/pesquisa?tipo=Terreno'
+        },
+        {
+            title: "CASAS",
+            count: casa,
+            image: imgCasa,
+            gridClass: "md:col-span-2 md:row-span-1",
+            url: '/pesquisa?tipo=Casa'
+        }
+    ]
+
     return (
         <section className="bg-[#f5f4f0] py-12 sm:py-16 md:py-20">
             <div className="container mx-auto px-4 sm:px-6 md:px-44">

@@ -22,7 +22,6 @@ const WhatsappPopup = ({ id }: PropsID) => {
         const message = `Olá! Gostaria de mais informações sobre o imóvel do endereço ${dataBD[0].endereco.rua} ${dataBD[0].endereco.numero}. Email: ${email}, Telefone: ${phone}`;
         window.open(`https://wa.me/${whatsappNumber}?text=${encodeURIComponent(message)}`, "_blank");
     }
-    
 
     useEffect(() => {
         async function fetchData() {
