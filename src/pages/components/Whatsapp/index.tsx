@@ -2,22 +2,40 @@ import { useEffect, useState } from "react"
 import { Button } from "@/components/ui/button"
 import { Input } from "@/components/ui/input"
 import { X } from "lucide-react"
+import { ImovelType } from "@/hooks/types"
+import { GetCardDB } from "@/firebase/admin/getDashboard"
 
-const WhatsappPopup = () => {
+interface PropsID {
+    id: string | undefined
+}
+
+const WhatsappPopup = ({ id }: PropsID) => {
     const [isOpen, setIsOpen] = useState(false)
     const [isVisible, setIsVisible] = useState(false)
     const [email, setEmail] = useState("")
     const [phone, setPhone] = useState("")
+    const [dataBD, setDataBD] = useState<ImovelType[]>([])
 
     const handleSubmit = (e: React.FormEvent) => {
-        e.preventDefault()
-        // Substitua pelo número do WhatsApp real
-        const whatsappNumber = "5511999999999"
-        const message = `Olá! Gostaria de mais informações sobre os imóveis. Email: ${email}, Telefone: ${phone}`
-        window.open(`https://wa.me/${whatsappNumber}?text=${encodeURIComponent(message)}`, "_blank")
+        e.preventDefault();
+        const whatsappNumber = `${dataBD[0].contato.telefone}`;
+        const message = `Olá! Gostaria de mais informações sobre o imóvel do endereço ${dataBD[0].endereco.rua} ${dataBD[0].endereco.numero}. Email: ${email}, Telefone: ${phone}`;
+        window.open(`https://wa.me/${whatsappNumber}?text=${encodeURIComponent(message)}`, "_blank");
     }
+    
 
     useEffect(() => {
+        async function fetchData() {
+            if (id) {
+                try {
+                    const dados = await GetCardDB({ id })
+                    setDataBD(dados)
+                } catch {
+                    console.log("Erro ao carregar dados do imóvel")
+                }
+            }
+        }
+        fetchData()
         setTimeout(() => {
             setIsOpen(true)
             setTimeout(() => setIsVisible(true), 50)
@@ -31,7 +49,7 @@ const WhatsappPopup = () => {
 
     return (
         <>
-            {/* Botão flutuante do WhatsApp */}
+            {/* Botão do WhatsApp */}
             <button
                 onClick={() => {
                     setIsOpen(true)
@@ -69,8 +87,8 @@ const WhatsappPopup = () => {
 
                     {/* Conteúdo */}
                     <div className="p-4">
-                        <div className="p-2 bg-[#f0e7e7] rounded mb-5">
-                            <p className="text-gray-700 mb-4">
+                        <div className="p-2 bg-[#f4f4ca] rounded mb-5">
+                            <p className="text-gray-700">
                                 Fale diretamente com o proprietário e agende sua visita!
                             </p>
                         </div>

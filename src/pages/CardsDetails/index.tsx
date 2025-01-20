@@ -165,7 +165,7 @@ export const CardDetails = () => {
             </div>
             <Banenrs />
             <Footer />
-            <WhatsappPopup/>
+            <WhatsappPopup id={id}/>
         </div>
     )
 }
