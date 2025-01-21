@@ -1,23 +1,52 @@
-import { useState } from "react"
+import { FormEvent, useState } from "react"
 import { Button } from "@/components/ui/button"
 import { Input } from "@/components/ui/input"
 import { Textarea } from "@/components/ui/textarea"
 import { Label } from "@/components/ui/label"
 import { Check } from "lucide-react"
-import { toast } from "@/hooks/use-toast"
 import { Header } from "../components/Header/Header"
 import { Footer } from "../components/Footer/Footer"
+import { useNavigate } from 'react-router-dom'
 
 export default function AnunciarPage() {
+    const router = useNavigate()
     const [isSubmitting, setIsSubmitting] = useState(false)
+    const [result, setResult] = useState("")
     const planoSemestral = { nomePlano: "Semestral", valor: "359,90" }
     const planoTrimestral = { nomePlano: "Trimestral", valor: "199,90" }
     const planoMensal = { nomePlano: "Mensal", valor: "34,90" }
 
-    const handleSubmit = async (event: React.FormEvent<HTMLFormElement>) => {
+    const handleSubmit = async (event: FormEvent<HTMLFormElement>) => {
         event.preventDefault()
-        
+        setIsSubmitting(true)
+        setResult("Enviando...")
+
+        const form = event.currentTarget
+        const formData = new FormData(form)
+
+        formData.append("access_key", "f6e92216-d504-4230-8485-ab50fb733154")
+
+        try {
+            const response = await fetch("https://api.web3forms.com/submit", {
+                method: "POST",
+                body: formData,
+            })
+
+            const data = await response.json()
+
+            if (data.success) {
+                router("/thanks")
+            } else {
+                setResult(`Erro: ${data.message}`)
+                setIsSubmitting(false)
+            }
+        } catch (error) {
+            setResult("Ocorreu um erro ao enviar o formulário. Por favor, tente novamente.")
+            console.error("Error:", error)
+            setIsSubmitting(false)
+        }
     }
+
 
     const handleSubmitWhatsapp = (
         e: React.MouseEvent<HTMLButtonElement, MouseEvent>,
@@ -163,6 +192,16 @@ export default function AnunciarPage() {
                             {isSubmitting ? "Enviando..." : "Enviar Mensagem"}
                         </Button>
                     </form>
+                    {result && (
+                        <div
+                            className={`mt-4 p-4 rounded ${result.includes("sucesso") ? "bg-green-100 text-green-800" : "bg-red-100 text-red-800"
+                                }`}
+                            role="alert"
+                            aria-live="polite"
+                        >
+                            {result}
+                        </div>
+                    )}
                 </div>
             </main>
 

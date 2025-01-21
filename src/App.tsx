@@ -12,6 +12,7 @@ import { CardDetails } from './pages/CardsDetails';
 import { SobrePage } from './pages/Sobre';
 import AnunciarPage from './pages/Anunciar';
 import { PageDePesquisa } from './pages/PaginaDePesquisa';
+import AgradecimentoPage from './pages/Agradecimento';
 
 export function App() {
   return (
@@ -31,6 +32,7 @@ export function App() {
           <Route path="/sobre" element={<SobrePage />} />
           <Route path="/anunciar" element={<AnunciarPage />} />
           <Route path="/pesquisa" element={<PageDePesquisa />} />
+          <Route path="/thanks" element={<AgradecimentoPage />} />
         </Routes>
       </BrowserRouter>
     </UserProvider>
