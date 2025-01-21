@@ -1,180 +1,149 @@
-import { useState } from 'react'
+import { useState } from "react"
 import { Button } from "@/components/ui/button"
 import { Input } from "@/components/ui/input"
 import { Textarea } from "@/components/ui/textarea"
 import { Label } from "@/components/ui/label"
-import { Check, Info } from 'lucide-react'
-import { toast } from '@/hooks/use-toast'
-import { Header } from '../components/Header/Header'
-import { Footer } from '../components/Footer/Footer'
+import { Check } from "lucide-react"
+import { toast } from "@/hooks/use-toast"
+import { Header } from "../components/Header/Header"
+import { Footer } from "../components/Footer/Footer"
 
 export default function AnunciarPage() {
     const [isSubmitting, setIsSubmitting] = useState(false)
+    const planoSemestral = { nomePlano: "Semestral", valor: "359,90" }
+    const planoTrimestral = { nomePlano: "Trimestral", valor: "199,90" }
+    const planoMensal = { nomePlano: "Mensal", valor: "34,90" }
 
     const handleSubmit = async (event: React.FormEvent<HTMLFormElement>) => {
         event.preventDefault()
-        setIsSubmitting(true)
+        
+    }
 
-        const formData = new FormData(event.currentTarget)
-
-        try {
-            const response = await fetch('/api/submit-contact', {
-                method: 'POST',
-                body: formData,
-            })
-
-            const data = await response.json()
-
-            if (data.success) {
-                toast({
-                    title: "Mensagem enviada",
-                    description: "Entraremos em contato em breve!",
-                })
-                event.currentTarget.reset()
-            } else {
-                throw new Error(data.message)
-            }
-        } catch (error) {
-            toast({
-                title: "Erro",
-                description: "Houve um problema ao enviar sua mensagem. Por favor, tente novamente.",
-                variant: "destructive",
-            })
-        } finally {
-            setIsSubmitting(false)
-        }
+    const handleSubmitWhatsapp = (
+        e: React.MouseEvent<HTMLButtonElement, MouseEvent>,
+        plano: { nomePlano: string; valor: string },
+    ) => {
+        e.preventDefault()
+        const whatsappNumber = "38992372678"
+        const message = `Olá! Gostaria de saber mais sobre o plano ${plano.nomePlano} de R$ ${plano.valor} para anunciar meu imóvel.`
+        window.open(`https://wa.me/${whatsappNumber}?text=${encodeURIComponent(message)}`, "_blank")
     }
 
     return (
         <div className="min-h-screen flex flex-col">
             <Header isHome={false} />
 
-            {/* Pricing Section */}
-            <section className="bg-gray-50 py-16">
-                <div className="container mx-auto px-4">
-                    <h2 className="text-3xl font-bold text-gray-900 mb-4 text-center">Mais planos para você</h2>
-                    <p className="text-gray-600 text-center mb-12">
-                        Obtenha e publique com qualquer um desses planos.
-                    </p>
+            <section className="bg-[#f5f4f0] py-16">
+                <div className="border-b-2 h-[80vh] ">
+                    <div className="container mx-auto px-4">
+                        <h2 className="text-3xl font-bold text-[#7FA086] mb-4 text-center">Mais planos para você</h2>
+                        <p className="text-gray-600 text-center mb-12">Obtenha e publique com qualquer um desses planos.</p>
 
-                    <div className="grid md:grid-cols-3 gap-8 max-w-5xl mx-auto">
-                        {/* Plano Anual */}
-                        <div className="bg-white p-8 rounded-lg shadow-md flex flex-col">
-                            <h3 className="text-purple-600 font-semibold mb-4">Super destaque Anual</h3>
-                            <div className="mb-6">
-                                <span className="text-4xl font-bold">R$ 519,00</span>
-                                <span className="text-gray-600">/ 1 ano</span>
+                        <div className="grid md:grid-cols-3 gap-8 max-w-5xl mx-auto">
+                            {/* Plano Semestral */}
+                            <div className="bg-white p-8 rounded-lg shadow-md flex flex-col">
+                                <h3 className="text-purple-600 font-semibold mb-4">Super destaque {planoSemestral.nomePlano}</h3>
+                                <div className="mb-6">
+                                    <span className="text-4xl font-bold">R$ {planoSemestral.valor}</span>
+                                    <span className="text-gray-600">/ 6 meses</span>
+                                </div>
+                                <ul className="space-y-4 mb-8 flex-grow">
+                                    <li className="flex items-start gap-2">
+                                        <Check className="w-5 h-5 text-green-500 mt-1 flex-shrink-0" />
+                                        <span>Mais tempo de Destaque, mais chances de fechar negócio!</span>
+                                    </li>
+                                    <li className="flex items-start gap-2">
+                                        <Check className="w-5 h-5 text-green-500 mt-1 flex-shrink-0" />
+                                        <span>Melhor custo-benefício</span>
+                                    </li>
+                                </ul>
+                                <Button
+                                    onClick={(e) => handleSubmitWhatsapp(e, planoSemestral)}
+                                    className="w-full bg-[#e27d60] hover:bg-[#e27d60]/90 text-white"
+                                    aria-label={`Contratar plano ${planoSemestral.nomePlano}`}
+                                >
+                                    Contratar plano
+                                </Button>
                             </div>
-                            <ul className="space-y-4 mb-8 flex-grow">
-                                <li className="flex items-start gap-2">
-                                    <Check className="w-5 h-5 text-green-500 mt-1 flex-shrink-0" />
-                                    <span>Máxima exposição</span>
-                                </li>
-                                <li className="flex items-start gap-2">
-                                    <Check className="w-5 h-5 text-green-500 mt-1 flex-shrink-0" />
-                                    <span>Melhor custo-benefício</span>
-                                </li>
-                                <li className="flex items-start gap-2">
-                                    <Check className="w-5 h-5 text-green-500 mt-1 flex-shrink-0" />
-                                    <span>Seu imóvel fica anunciado conosco durante 1 ano até que você consiga</span>
-                                </li>
-                            </ul>
-                            <Button className="w-full bg-[#FF4500] hover:bg-[#FF4500]/90 text-white">
-                                Comprar
-                            </Button>
-                        </div>
 
-                        {/* Plano Semestral */}
-                        <div className="bg-white p-8 rounded-lg shadow-md flex flex-col">
-                            <h3 className="text-purple-600 font-semibold mb-4">Super destaque Semestral</h3>
-                            <div className="mb-6">
-                                <span className="text-4xl font-bold">R$ 399,00</span>
-                                <span className="text-gray-600">/ 6 meses</span>
+                            {/* Plano Trimestral */}
+                            <div className="bg-white p-8 rounded-lg shadow-md flex flex-col">
+                                <h3 className="text-purple-600 font-semibold mb-4">Super destaque {planoTrimestral.nomePlano}</h3>
+                                <div className="mb-6">
+                                    <span className="text-4xl font-bold">R$ {planoTrimestral.valor}</span>
+                                    <span className="text-gray-600">/ 3 meses</span>
+                                </div>
+                                <ul className="space-y-4 mb-8 flex-grow">
+                                    <li className="flex items-start gap-2">
+                                        <Check className="w-5 h-5 text-green-500 mt-1 flex-shrink-0" />
+                                        <span>Anúncio Super Destaque de ótima exposição!</span>
+                                    </li>
+                                    <li className="flex items-start gap-2">
+                                        <Check className="w-5 h-5 text-green-500 mt-1 flex-shrink-0" />
+                                        <span>Seu imóvel fica anunciado conosco durante 3 meses</span>
+                                    </li>
+                                </ul>
+                                <Button
+                                    onClick={(e) => handleSubmitWhatsapp(e, planoTrimestral)}
+                                    className="w-full bg-[#e27d60] hover:bg-[#e27d60]/90 text-white"
+                                    aria-label={`Contratar plano ${planoTrimestral.nomePlano}`}
+                                >
+                                    Contratar plano
+                                </Button>
                             </div>
-                            <ul className="space-y-4 mb-8 flex-grow">
-                                <li className="flex items-start gap-2">
-                                    <Check className="w-5 h-5 text-green-500 mt-1 flex-shrink-0" />
-                                    <span>Anúncio Super Destaque de ótima exposição!</span>
-                                </li>
-                                <li className="flex items-start gap-2">
-                                    <Check className="w-5 h-5 text-green-500 mt-1 flex-shrink-0" />
-                                    <span>50% de desconto sobre o valor mensal</span>
-                                </li>
-                            </ul>
-                            <Button className="w-full bg-[#FF4500] hover:bg-[#FF4500]/90 text-white">
-                                Comprar
-                            </Button>
-                        </div>
 
-                        {/* Plano Trimestral */}
-                        <div className="bg-white p-8 rounded-lg shadow-md flex flex-col">
-                            <h3 className="text-purple-600 font-semibold mb-4">Super Destaque Trimestral</h3>
-                            <div className="mb-6">
-                                <span className="text-4xl font-bold">R$ 209,00</span>
-                                <span className="text-gray-600">/ 3 meses</span>
+                            {/* Plano Mensal */}
+                            <div className="bg-white p-8 rounded-lg shadow-md flex flex-col">
+                                <h3 className="text-purple-600 font-semibold mb-4">Super Destaque {planoMensal.nomePlano}</h3>
+                                <div className="mb-6">
+                                    <div className="flex items-center gap-2">
+                                        <span className="text-gray-400 line-through text-2xl">R$ 69,90</span>
+                                        <span className="bg-green-100 text-green-700 text-sm px-2 py-1 rounded">-50%</span>
+                                    </div>
+                                    <div className="flex items-baseline">
+                                        <span className="text-4xl font-bold">R$ {planoMensal.valor}</span>
+                                        <span className="text-gray-600">/ 30 dias</span>
+                                    </div>
+                                </div>
+                                <ul className="space-y-4 mb-8 flex-grow">
+                                    <li className="flex items-start gap-2">
+                                        <Check className="w-5 h-5 text-green-500 mt-1 flex-shrink-0" />
+                                        <span>-50% no primeiro mês</span>
+                                    </li>
+                                    <li className="flex items-start gap-2">
+                                        <Check className="w-5 h-5 text-green-500 mt-1 flex-shrink-0" />
+                                        <span>Custo-benefício</span>
+                                    </li>
+                                </ul>
+                                <Button
+                                    onClick={(e) => handleSubmitWhatsapp(e, planoMensal)}
+                                    className="w-full bg-[#e27d60] hover:bg-[#e27d60]/90 text-white"
+                                    aria-label={`Contratar plano ${planoMensal.nomePlano}`}
+                                >
+                                    Contratar plano
+                                </Button>
                             </div>
-                            <ul className="space-y-4 mb-8 flex-grow">
-                                <li className="flex items-start gap-2">
-                                    <Check className="w-5 h-5 text-green-500 mt-1 flex-shrink-0" />
-                                    <span>Máxima exposição</span>
-                                </li>
-                                <li className="flex items-start gap-2">
-                                    <Check className="w-5 h-5 text-green-500 mt-1 flex-shrink-0" />
-                                    <span>Proporciona maior quantidade de interessados</span>
-                                </li>
-                                <li className="flex items-start gap-2">
-                                    <Check className="w-5 h-5 text-green-500 mt-1 flex-shrink-0" />
-                                    <span>Melhor custo-benefício</span>
-                                </li>
-                            </ul>
-                            <Button className="w-full bg-[#FF4500] hover:bg-[#FF4500]/90 text-white">
-                                Comprar
-                            </Button>
                         </div>
-                    </div>
-
-                    <div className="flex items-center justify-center gap-2 mt-6 text-gray-600 text-sm">
-                        <Info className="w-4 h-4" />
-                        <p>Duração de um mês igual a 30 dias. Plano com renovação automática.</p>
                     </div>
                 </div>
             </section>
 
             {/* Contact Form Section */}
-            <main className="flex-grow container mx-auto px-4 py-16">
+            <main className="flex-grow container mx-auto px-4 pb-16 bg-[#f5f4f0]">
                 <div className="max-w-md mx-auto">
                     <h2 className="text-3xl font-bold text-[#7FA086] mb-6 text-center">Entre em Contato</h2>
-                    <p className="text-gray-600 mb-8 text-center">
-                        Preencha o formulário abaixo para anunciar seu imóvel ou tirar dúvidas.
-                    </p>
                     <form onSubmit={handleSubmit} className="space-y-6">
                         <div className="space-y-2">
                             <Label htmlFor="nome">Nome Completo</Label>
-                            <Input
-                                id="nome"
-                                name="nome"
-                                required
-                                placeholder="Seu nome completo"
-                            />
+                            <Input id="nome" name="nome" required placeholder="Seu nome completo" />
                         </div>
                         <div className="space-y-2">
                             <Label htmlFor="email">Email</Label>
-                            <Input
-                                id="email"
-                                name="email"
-                                type="email"
-                                required
-                                placeholder="seu@email.com"
-                            />
+                            <Input id="email" name="email" type="email" required placeholder="seu@email.com" />
                         </div>
                         <div className="space-y-2">
                             <Label htmlFor="telefone">Telefone</Label>
-                            <Input
-                                id="telefone"
-                                name="telefone"
-                                required
-                                placeholder="(38) 99999-9999"
-                            />
+                            <Input id="telefone" name="telefone" type="tel" required placeholder="(38) 99999-9999" />
                         </div>
                         <div className="space-y-2">
                             <Label htmlFor="mensagem">Mensagem</Label>
@@ -182,16 +151,16 @@ export default function AnunciarPage() {
                                 id="mensagem"
                                 name="mensagem"
                                 required
-                                placeholder="Descreva brevemente o imóvel que deseja anunciar ou sua dúvida..."
+                                placeholder="Descreva brevemente o motivo do contato."
                                 className="min-h-[150px]"
                             />
                         </div>
                         <Button
                             type="submit"
-                            className="w-full bg-[#E88D72] hover:bg-[#E88D72]/90 text-white"
+                            className="w-full bg-[#e27d60] hover:bg-[#e27d60]/90 text-white"
                             disabled={isSubmitting}
                         >
-                            {isSubmitting ? 'Enviando...' : 'Enviar Mensagem'}
+                            {isSubmitting ? "Enviando..." : "Enviar Mensagem"}
                         </Button>
                     </form>
                 </div>
@@ -201,4 +170,3 @@ export default function AnunciarPage() {
         </div>
     )
 }
-
