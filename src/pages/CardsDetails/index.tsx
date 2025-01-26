@@ -2,7 +2,7 @@ import { Button } from '@/components/ui/button'
 import { Card } from '@/components/ui/card'
 import { GetCardDB } from '@/firebase/admin/getDashboard'
 import { ImovelType } from '@/hooks/types'
-import { Armchair, Bath, Bed, Mail, Phone, Ruler, Utensils, MoveLeft } from 'lucide-react'
+import { Armchair, Bath, Bed, Mail, Phone, Ruler, Utensils, MoveLeft, CarFront } from 'lucide-react'
 import { useState, useEffect } from 'react'
 import { useNavigate, useParams } from 'react-router-dom'
 import { Maps } from '../components/Maps/Maps'
@@ -141,6 +141,12 @@ export const CardDetails = () => {
                                         {property.metros2}m²
                                     </span>
                                 ) : null}
+                                {Number(property.vagas) > 0 ? (
+                                    <span className="flex items-center gap-1 sm:gap-2 text-sm sm:text-base">
+                                        <CarFront className="h-4 w-4 sm:h-5 sm:w-5 text-[#3b82f6]" />
+                                        {property.vagas}
+                                    </span>
+                                ) : null}
                             </div>
                         </div>
 
@@ -165,7 +171,7 @@ export const CardDetails = () => {
             </div>
             <Banenrs />
             <Footer />
-            <WhatsappPopup id={id}/>
+            <WhatsappPopup id={id} />
         </div>
     )
 }

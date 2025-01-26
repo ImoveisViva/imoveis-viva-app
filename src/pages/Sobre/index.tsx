@@ -60,6 +60,10 @@ export function SobrePage() {
                             <svg className="w-5 h-5 sm:w-6 sm:h-6 text-orange-500 mr-2 flex-shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M5 13l4 4L19 7"></path></svg>
                             <span>Processo transparente e seguro</span>
                         </li>
+                        <li className="flex items-center">
+                            <svg className="w-5 h-5 sm:w-6 sm:h-6 text-orange-500 mr-2 flex-shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M5 13l4 4L19 7"></path></svg>
+                            <span>Ferramentas modernas para facilitar sua busca.</span>
+                        </li>
                     </ul>
                 </div>
             </main>

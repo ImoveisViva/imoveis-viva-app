@@ -52,7 +52,7 @@ export default function Filtro({ onFilterResults }: FiltroProps) {
             <div className="space-y-6">
                 <div className="flex items-center gap-3">
                     <div className='w-1 h-8 bg-[#e27d60] mt-1' aria-hidden={true} />
-                    <h1 className="text-2xl sm:text-3xl md:text-[30px] font-bold text-center text-[#7a9e7e]">QUAL IMÓVEL ESTÁ PROCURANDO?</h1>
+                    <h1 className="text-xl sm:text-3xl md:text-[30px] font-bold text-[#7a9e7e]">QUAL IMÓVEL ESTÁ PROCURANDO?</h1>
                 </div>
 
                 <div className="grid grid-cols-1 md:grid-cols-3 gap-4 ">
@@ -61,8 +61,8 @@ export default function Filtro({ onFilterResults }: FiltroProps) {
                             <SelectValue placeholder="Pretensão" />
                         </SelectTrigger>
                         <SelectContent>
-                            <SelectItem value="Aluguel">Aluguel</SelectItem>
-                            <SelectItem value="Venda">Compra</SelectItem>
+                            <SelectItem className='cursor-pointer' value="Aluguel">Aluguel</SelectItem>
+                            <SelectItem className='cursor-pointer' value="Venda">Compra</SelectItem>
                         </SelectContent>
                     </Select>
 
@@ -71,9 +71,9 @@ export default function Filtro({ onFilterResults }: FiltroProps) {
                             <SelectValue placeholder="Tipo do Imóvel" />
                         </SelectTrigger>
                         <SelectContent>
-                            <SelectItem value="Casa">Casa</SelectItem>
-                            <SelectItem value="Apartamento">Apartamento</SelectItem>
-                            <SelectItem value="outros">Outros</SelectItem>
+                            <SelectItem className='cursor-pointer' value="Casa">Casa</SelectItem>
+                            <SelectItem className='cursor-pointer' value="Apartamento">Apartamento</SelectItem>
+                            <SelectItem className='cursor-pointer' value="outros">Outros</SelectItem>
                         </SelectContent>
                     </Select>
 
@@ -82,10 +82,10 @@ export default function Filtro({ onFilterResults }: FiltroProps) {
                             <SelectValue placeholder="Número de Quartos" />
                         </SelectTrigger>
                         <SelectContent>
-                            <SelectItem value="1">1 Quarto</SelectItem>
-                            <SelectItem value="2">2 Quartos</SelectItem>
-                            <SelectItem value="3">3 Quartos</SelectItem>
-                            <SelectItem value="4">4+ Quartos</SelectItem>
+                            <SelectItem className='cursor-pointer' value="1">1 Quarto</SelectItem>
+                            <SelectItem className='cursor-pointer' value="2">2 Quartos</SelectItem>
+                            <SelectItem className='cursor-pointer' value="3">3 Quartos</SelectItem>
+                            <SelectItem className='cursor-pointer' value="4">4+ Quartos</SelectItem>
                         </SelectContent>
                     </Select>
 
@@ -94,9 +94,9 @@ export default function Filtro({ onFilterResults }: FiltroProps) {
                             <SelectValue placeholder="Vagas de Garagem" />
                         </SelectTrigger>
                         <SelectContent>
-                            <SelectItem value="1">1 Vaga</SelectItem>
-                            <SelectItem value="2">2 Vagas</SelectItem>
-                            <SelectItem value="3">3+ Vagas</SelectItem>
+                            <SelectItem className='cursor-pointer' value="1">1 Vaga</SelectItem>
+                            <SelectItem className='cursor-pointer' value="2">2 Vagas</SelectItem>
+                            <SelectItem className='cursor-pointer' value="3">3+ Vagas</SelectItem>
                         </SelectContent>
                     </Select>
                 </div>
@@ -112,7 +112,7 @@ export default function Filtro({ onFilterResults }: FiltroProps) {
                             min={200}
                             max={1000000}
                             step={1000}
-                            className="[&_[role=slider]]:bg-emerald-500"
+                            className="[&_[role=slider]]:bg-emerald-500 cursor-pointer"
                         />
                     </div>
                     <Button type="submit" disabled={loading} className={`w-full h-10 text-white ${loading ? 'bg-gray-400' : 'bg-[#7a9e7e] hover:bg-[#7a9e7e]/80'}`}>

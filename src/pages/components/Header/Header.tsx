@@ -16,7 +16,7 @@ export function Header({ isHome }: PropType) {
 
     if (isHome) {
         return (
-            <section>
+            <section style={{ textShadow: "1px 1px 2px rgba(0, 0, 0, .7)" }}>
                 <header className='bg-[#7a9e7e] px-4 sm:px-6 md:px-12 lg:px-44'>
                     <nav className='flex justify-between h-[11vh] items-center'>
                         <div className='flex items-center text-white font-bold text-xl sm:text-2xl md:text-[27px]'>
@@ -64,7 +64,7 @@ export function Header({ isHome }: PropType) {
         );
     } else {
         return (
-            <section>
+            <section style={{ textShadow: "1px 1px 2px rgba(0, 0, 0, .7)" }}>
                 <header className='bg-[#7a9e7e] px-4 sm:px-6 md:px-12 lg:px-44'>
                     <nav className='flex justify-between h-[11vh] items-center'>
                         <div className='flex items-center text-white font-bold text-xl sm:text-2xl md:text-[27px]'>

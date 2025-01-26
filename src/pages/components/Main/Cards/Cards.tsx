@@ -1,81 +1,77 @@
-import { Card, CardHeader, CardTitle } from "@/components/ui/card"
-import { ImovelType } from '@/hooks/types';
-import { Bath, Bed, MapPin, Ruler, CarFront } from 'lucide-react';
-import { Button } from '@/components/ui/button';
-import { Link } from 'react-router-dom';
+import { Card, CardTitle, CardContent, CardFooter } from "@/components/ui/card"
+import type { ImovelType } from "@/hooks/types"
+import { Bath, Bed, MapPin, Ruler, CarFront } from "lucide-react"
+import { Button } from "@/components/ui/button"
+import { Link } from "react-router-dom"
 
 interface PropertyCardProps {
-  imovel: ImovelType;
+  imovel: ImovelType
 }
 
 export const Cards: React.FC<PropertyCardProps> = ({ imovel }) => {
   return (
-    <Card className='relative max-h-[55vh] min-h-[55vh] rounded-md shadow-sm'>
-      <div className="relative w-full h-[200px]">
+    <Card className="flex flex-col h-full rounded-md shadow-sm">
+      <div className="relative w-full h-48 sm:h-56 md:h-64 lg:h-72">
         <img
-          src={
-            imovel.fotos[0] instanceof File
-              ? URL.createObjectURL(imovel.fotos[0])
-              : imovel.fotos[0]
-          }
+          src={imovel.fotos[0] instanceof File ? URL.createObjectURL(imovel.fotos[0]) : imovel.fotos[0]}
           alt={`${imovel.tipoImovel} em ${imovel.endereco.bairro}`}
-          className="rounded-t-md max-h-[100%] max-w-[100%] min-h-[100%] min-w-[100%] bg-cover"
+          className="rounded-t-md w-full h-full object-cover"
         />
       </div>
 
-      <CardHeader className='gap-2'>
-        <div className="flex justify-between">
-          <CardTitle className='text-[20px] text-[#7a9e7e]'>{imovel.tipoImovel}</CardTitle>
-          <CardTitle className='text-[20px] text-[#7a9e7e]'>{imovel.id}</CardTitle>
+      <CardContent className="flex-grow flex flex-col p-4">
+        <div className="flex justify-between items-center mb-2">
+          <CardTitle className="text-lg sm:text-xl md:text-2xl text-[#7a9e7e]">{imovel.tipoImovel}</CardTitle>
+          <CardTitle className="text-lg sm:text-xl md:text-2xl text-[#7a9e7e]">{imovel.id}</CardTitle>
         </div>
 
-        <div className='flex gap-2 items-center justify-between'>
-          <p className="font-bold text-lg text-[#e27d60]">
+        <div className="flex flex-col sm:flex-row gap-2 items-start sm:items-center justify-between mb-4">
+          <p className="font-bold text-base sm:text-lg md:text-xl text-[#e27d60]">
             {imovel.tipoImovel === "Apartamento"
-              ? `R$${imovel.preco.toLocaleString('pt-BR')}/mês`
-              : `R$${imovel.preco.toLocaleString('pt-BR')}`
-            }
+              ? `R$${imovel.preco.toLocaleString("pt-BR")}/mês`
+              : `R$${imovel.preco.toLocaleString("pt-BR")}`}
           </p>
-          <p className='flex items-center gap-1 text-[#858585]'>
-            <MapPin size={18} />{imovel.endereco.bairro}
+          <p className="flex items-center gap-1 text-sm sm:text-base text-[#858585]">
+            <MapPin size={18} />
+            {imovel.endereco.bairro}
           </p>
         </div>
 
-        <div className="flex justify-between text-[#858585]">
-          {imovel.quartos > 0 ? (
-            <span className="flex items-center gap-1 sm:gap-1 text-sm sm:text-base">
-              <Bed className="h-4 w-4 sm:h-5 sm:w-5" />
+        <div className="flex flex-row flex-wrap gap-6 text-[#858585] text-xs sm:text-sm md:text-base mb-4">
+          {imovel.quartos > 0 && (
+            <span className="flex items-center gap-1">
+              <Bed className="h-4 w-4" />
               {imovel.quartos} Qt
             </span>
-          ) : null}
-          {imovel.banheiro > 0 ? (
-            <span className="flex items-center gap-1 sm:gap-1 text-sm sm:text-base">
-              <Bath className="h-4 w-4 sm:h-5 sm:w-5" />
+          )}
+          {imovel.banheiro > 0 && (
+            <span className="flex items-center gap-1">
+              <Bath className="h-4 w-4" />
               {imovel.banheiro} Banh
             </span>
-          ) : null}
-          {imovel.metros2 > 0 ? (
-            <span className="flex items-center gap-1 sm:gap-1 text-sm sm:text-base">
-              <Ruler className="h-4 w-4 sm:h-5 sm:w-5" />
+          )}
+          {imovel.metros2 > 0 && (
+            <span className="flex items-center gap-1">
+              <Ruler className="h-4 w-4" />
               {imovel.metros2}m²
             </span>
-          ) : null}
-          {imovel.metros2 > 0 ? (
-            <span className="flex items-center gap-1 sm:gap-1 text-sm sm:text-base">
-              <CarFront className="h-4 w-4 sm:h-5 sm:w-5" />
-              {imovel.metros2} Gar
+          )}
+          {Number(imovel.vagas) > 0 && (
+            <span className="flex items-center gap-1">
+              <CarFront className="h-4 w-4" />
+              {imovel.vagas} Gar
             </span>
-          ) : null}
+          )}
         </div>
+      </CardContent>
 
-        <Link to={`/estate/${imovel.id}`}>
-          <Button
-            className="absolute inset-x-4 bottom-4 h-11 w-[calc(100%-2rem)] border border-[#7a9e7e] text-[#7a9e7e] bg-transparent hover:bg-[#7a9e7e] hover:text-white transition-colors"
-          >
+      <CardFooter className="-m-2">
+        <Link to={`/estate/${imovel.id}`} className="w-full">
+          <Button className="w-full h-10 sm:h-11 border border-[#7a9e7e] text-[#7a9e7e] bg-transparent hover:bg-[#7a9e7e] hover:text-white transition-colors">
             Ver detalhes
           </Button>
         </Link>
-      </CardHeader>
+      </CardFooter>
     </Card>
-  );
-};
+  )
+}
