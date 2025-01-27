@@ -2,7 +2,7 @@ import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card"
 import { Progress } from "@/components/ui/progress"
 import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from "@/components/ui/table"
 import { PieChart, Pie, Cell, BarChart, Bar, XAxis, YAxis, Tooltip, Legend, ResponsiveContainer } from 'recharts'
-import { Building, Home, Landmark } from 'lucide-react'
+import { Building, Home, Landmark, Earth, Construction } from 'lucide-react'
 import { useEffect, useState } from "react"
 import { ImovelType } from "@/hooks/types"
 import { GetImoveisDB } from "@/firebase/admin/getDashboard"
@@ -34,12 +34,14 @@ export default function DashboardPro() {
   // TIPOS DE IMÓVEIS ----------------------------------------------------------
   const casa = dataBD.filter(imovel => imovel.tipoImovel === 'Casa');
   const apartamento = dataBD.filter(imovel => imovel.tipoImovel === 'Apartamento');
-  const comercial = dataBD.filter(imovel => imovel.tipoImovel === 'Comercial');
+  const construcao = dataBD.filter(imovel => imovel.tipoImovel === 'Construcao');
+  const terreno = dataBD.filter(imovel => imovel.tipoImovel === 'Terreno');
 
   const tipoImoveis = [
     { name: 'Apartamento', value: apartamento.length, icon: Building },
     { name: 'Casa', value: casa.length, icon: Home },
-    { name: 'Outros', value: comercial.length, icon: Landmark },
+    { name: 'Terreno', value: terreno.length, icon: Earth },
+    { name: 'Construção', value: construcao.length, icon: Construction },
   ]
 
   // CATEGORIA DE IMÓVEIS ------------------------------------------------------

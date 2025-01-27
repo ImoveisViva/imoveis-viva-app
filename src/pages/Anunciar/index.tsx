@@ -73,7 +73,7 @@ export default function AnunciarPage() {
         animate={{ y: 0, opacity: 1 }}
         transition={{ duration: 0.5, delay: 0.2 }}
       >
-        <div className="border-b-2 h-[80vh] ">
+        <div className="border-b-2  ">
           <div className="container mx-auto px-4">
             <h2 className="text-3xl font-bold text-[#7FA086] mb-4 text-center">Mais planos para você</h2>
             <p className="text-gray-600 text-center mb-12">Obtenha e publique com qualquer um desses planos.</p>

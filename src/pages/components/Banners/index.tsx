@@ -32,8 +32,8 @@ export default function Banenrs() {
     }, [])
 
     const apartamento = dataBD.filter((imovel) => imovel.tipoImovel === "Apartamento").length
-    const construcao = dataBD.filter((imovel) => imovel.tipoImovel === "Construção").length
-    const terreno = dataBD.filter((imovel) => imovel.tipoImovel === "terrenos").length
+    const construcao = dataBD.filter((imovel) => imovel.tipoImovel === "Construcao").length
+    const terreno = dataBD.filter((imovel) => imovel.tipoImovel === "Terreno").length
     const casa = dataBD.filter(imovel => imovel.tipoImovel === "Casa").length
 
     const categories: PropertyCategory[] = [
@@ -49,7 +49,7 @@ export default function Banenrs() {
             count: construcao,
             image: imgContru,
             gridClass: "md:col-span-1 md:row-span-1",
-            url: ''
+            url: '/pesquisa?tipo=Construcao'
         },
         {
             title: "TERRENOS",

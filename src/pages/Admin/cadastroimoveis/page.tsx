@@ -252,7 +252,8 @@ export default function CadastroImoveisPage() {
                                     <SelectContent>
                                         <SelectItem value="Casa">Casa</SelectItem>
                                         <SelectItem value="Apartamento">Apartamento</SelectItem>
-                                        <SelectItem value="Comercial">Comercial</SelectItem>
+                                        <SelectItem value="Construcao">Construção</SelectItem>
+                                        <SelectItem value="Terreno">Terreno</SelectItem>
                                     </SelectContent>
                                 </Select>
                             </div>

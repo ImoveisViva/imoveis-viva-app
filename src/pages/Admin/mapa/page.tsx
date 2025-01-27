@@ -28,7 +28,7 @@ export function Mapa() {
 
     return (
         <div className="p-4">
-            <div className="mb-4">
+            {/* <div className="mb-4">
                 <h2 className="text-lg font-semibold mb-2">Filtros:</h2>
                 <div className="flex flex-wrap gap-2">
                     <button className="px-3 py-1 rounded bg-gray-200">Aluguel</button>
@@ -37,7 +37,7 @@ export function Mapa() {
                     <button className="px-3 py-1 rounded bg-gray-200">Apartamento</button>
                     <button className="px-3 py-1 rounded bg-gray-200">Outros</button>
                 </div>
-            </div>
+            </div> */}
             <div className="h-[80vh] w-full">
                 <MapContainer center={[-16.361858, -46.893249]} zoom={15} style={{ height: '100%', width: '100%' }}>
                     <TileLayer
