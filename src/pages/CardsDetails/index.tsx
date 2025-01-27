@@ -60,6 +60,13 @@ export const CardDetails = () => {
         foto instanceof File ? URL.createObjectURL(foto) : foto
     )
 
+    const handleSubmit = (e: React.FormEvent) => {
+        e.preventDefault();
+        const whatsappNumber = `${dataBD[0].contato.telefone}`;
+        const message = `Olá! Gostaria de mais informações sobre o imóvel do endereço ${dataBD[0].endereco.rua} ${dataBD[0].endereco.numero}`;
+        window.open(`https://wa.me/${whatsappNumber}?text=${encodeURIComponent(message)}`, "_blank");
+    }
+
     return (
         <div className='bg-[#f5f4f0]'>
             <Header isHome={false} />
@@ -164,7 +171,7 @@ export const CardDetails = () => {
                             <p className='flex items-center gap-2 text-sm sm:text-base'><Mail className="h-4 w-4" />{property.contato.email}</p>
                         </div>
 
-                        <Button className='mt-4 w-full bg-[#e27d60] hover:bg-[#e27d60]/70'>Entrar em contato</Button>
+                        <Button className='mt-4 w-full bg-[#e27d60] hover:bg-[#e27d60]/70' onClick={handleSubmit}>Entrar em contato</Button>
                     </Card>
                 </div>
                 <Maps latitude={property.endereco.latitude} longitude={property.endereco.longitude} theme={'light'} />
