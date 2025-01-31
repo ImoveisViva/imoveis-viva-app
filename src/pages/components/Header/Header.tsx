@@ -20,7 +20,7 @@ export function Header({ isHome }: PropType) {
                 <header className='bg-[#7a9e7e] px-4 sm:px-6 md:px-12 lg:px-44'>
                     <nav className='flex justify-between h-[11vh] items-center'>
                         <div className='flex items-center text-white font-bold text-xl sm:text-2xl md:text-[27px]'>
-                            <Link to={'/'} className='flex items-center'>
+                            <Link to={'/'} className='flex items-center gap-2'>
                                 <span>Imóveis Viva</span>
                             </Link>
                         </div>
