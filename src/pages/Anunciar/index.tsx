@@ -78,7 +78,7 @@ export default function AnunciarPage() {
             <h2 className="text-3xl font-bold text-[#7FA086] mb-4 text-center">Mais planos para você</h2>
             <p className="text-gray-600 text-center mb-12">Obtenha e publique com qualquer um desses planos.</p>
 
-            <div className="grid md:grid-cols-3 gap-8 max-w-5xl mx-auto">
+            <div className="grid md:grid-cols-3 gap-8 max-w-5xl mx-auto pb-16">
               {/* Plano Semestral */}
               <motion.div
                 className="bg-white p-8 rounded-lg shadow-md flex flex-col"
