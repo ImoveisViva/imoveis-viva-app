@@ -53,7 +53,7 @@ export function Header({ isHome }: PropType) {
                 >
                     <h1 className='font-bold text-2xl sm:text-4xl md:text-[40px] mb-4 sm:mb-5'>
                         {/* Encontre o Imóvel dos Sonhos para Alugar */}
-                        Seu Sonho está mais Próximo agora!
+                        Seu sonho está mais próximo agora!
                     </h1>
                     <span className='text-lg sm:text-xl md:text-[25px]'>
                         Milhares de opções em Unaí.
