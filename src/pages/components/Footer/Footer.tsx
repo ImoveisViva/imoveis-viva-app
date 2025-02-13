@@ -50,7 +50,7 @@ export function Footer() {
                                     href="mailto:info@imoveisviva.com"
                                     className="text-[#e27d60] hover:underline"
                                 >
-                                    info@imoveisviva.com
+                                    imoveisviva.contato@gmail.com
                                 </a>
                             </p>
 
